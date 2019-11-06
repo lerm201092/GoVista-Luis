@@ -45,10 +45,43 @@ class PacientesController extends Controller
         return redirect()->route('modulos.pacientes.editar', ['PacienteId' => $request->PacienteId ? $request->PacienteId : '0']);
     }
 
-    public function crear(){
-        return "CREANDO PACIENTE";
+    public function update(Request $request, $id){
+        $requestData = $request->all();
+        $paciente = Paciente::findOrFail($id);
+        $nombrepaciente = $paciente->name1." ".$paciente->surname1;
+        $paciente->update($requestData);        
+        return redirect('modulos/pacientes/listado')
+                ->with('mensaje', "¡Los datos han sido actualizados satisfactoriamente!")
+                ->with('nompaciente', $nombrepaciente);
     }
 
+    public function insert(Request $request){
+
+        $rules = [
+            'name1' => 'required|min:2|max:50',
+            'surname1' => 'required|min:2|max:50',
+            'birthdate' => 'required|date|date_format:Y-m-d'
+        ];
+        
+        $messages = [
+            'name1.required' => 'Agrega primer nombre al paciente.',
+            'surname1.required' => 'Agrega primer apellido del paciente.',
+            'birthdate.required' => 'Asigne una fecha de nacimiento al paciente.',
+            'name1.min' =>'El primer nombre del paciente debe contener al menos :min caracteres.',
+            'name1.max' =>'El primer nombre del paciente no debe superar los :max caracteres.',
+            'surname1.min' =>'El primer apellido del paciente debe contener al menos :min caracteres.',
+            'surname1.max' =>'El primer apellido del paciente no debe superar los :max caracteres.'
+        ];
+        
+        $this->validate($request, $rules, $messages);
+
+        $requestData = $request->all();
+        Paciente::create($requestData);
+        $nombrepaciente = $request->name1." ".$request->surname1;
+        return redirect('modulos/pacientes/listado')
+                ->with('mensaje', "¡Se ha agregado satisfactoriamente!")
+                ->with('nompaciente', $nombrepaciente);
+    }
 
     public function editar( $PacienteId ){
         $paciente = Paciente::findOrFail( $PacienteId );
@@ -61,7 +94,7 @@ class PacientesController extends Controller
         $json_area              = array( 'paciente' => $dptopac_area,       'contacto' => $dptocontact_area );
         $json_municipio         = array( 'paciente' => $json_munipac, 'contacto' => $json_municontact );         
 
-        return view('modulos.pacientes.form')
+        return view('modulos.pacientes.editar')
                 ->with('paciente',          $paciente)
                 ->with('json_sexo',         $this->json_sexo)
                 ->with('json_tipodoc',      $this->json_tipodoc)
@@ -73,15 +106,34 @@ class PacientesController extends Controller
                 ->with('json_municipio',   $json_municipio);
     }
 
-    public function update(Request $request, $id){
-        $requestData = $request->all();
-        $paciente = Paciente::findOrFail($id);
-        $nombrepaciente = $paciente->name1." ".$paciente->name2." ".$paciente->surname1." ".$paciente->surname2;
-        $paciente->update($requestData);        
-        return redirect('modulos/pacientes/listado')
-                ->with('mensaje', "¡Los datos han sido actualizados satisfactoriamente!")
-                ->with('nompaciente', $nombrepaciente);
+
+
+    public function crear(){
+        $this->id_empresa = Session::get('id_empresa');
+        $paciente = array();
+        self::queryEPS();
+        self::queryDpto();
+        $dptopac_area           = self::queryArea(0);
+        $dptocontact_area       = self::contact_queryArea(0);
+        $json_munipac           = self::queryMunicipio($dptopac_area);  
+        $json_municontact       = self::queryMunicipio($dptocontact_area);  
+        $json_area              = array( 'paciente' => $dptopac_area,       'contacto' => $dptocontact_area );
+        $json_municipio         = array( 'paciente' => $json_munipac, 'contacto' => $json_municontact );         
+
+        return view('modulos.pacientes.crear')
+                ->with('paciente',          $paciente)
+                ->with('json_sexo',         $this->json_sexo)
+                ->with('json_tipodoc',      $this->json_tipodoc)
+                ->with('json_eps',          $this->json_eps)
+                ->with('json_zona',         $this->json_zona)
+                ->with('json_estado',       $this->json_estado)
+                ->with('json_area',         $json_area)
+                ->with('json_dpto',         $this->json_dpto)                
+                ->with('json_municipio',   $json_municipio)
+                ->with('id_empresa',       $this->id_empresa);
     }
+
+
 
     public function ver( $PacienteId ){
         $paciente = DB::select('select c.*,a.nomarea municipio,s.nomarea dpto,a2.nomarea municipio_contact,s2.nomarea dpto_contact,e.name eps '.
@@ -110,7 +162,7 @@ class PacientesController extends Controller
                 ->orderBy('name2', 'asc')
                 ->paginate($perPage);
 
-        return view('modulos.pacientes.index', compact('patients'))->with('texto', '')->with('mensaje', '');
+        return view('modulos.pacientes.listar', compact('patients'))->with('texto', '')->with('mensaje', '');
     }
 
 
@@ -136,7 +188,7 @@ class PacientesController extends Controller
                     ->orderBy('name1', 'asc')
                     ->orderBy('name2', 'asc')
                     ->paginate($perPage);        
-        return view('modulos.pacientes.index', compact('patients'))->with('texto', $keyword);                    
+        return view('modulos.pacientes.listar', compact('patients'))->with('texto', $keyword);                    
     }
 
     public function queryEPS(){

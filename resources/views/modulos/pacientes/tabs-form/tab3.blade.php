@@ -3,13 +3,13 @@
         <div class="col-md-6 pb-3">
             <div class="mat-div is-completed    ">
                 <label for="first-name" class="mat-label">Dirección</label>
-                {{ Form::text('address', ucwords(strtolower($paciente->address)), array('class' => 'mat-input')) }}
+                {{ Form::text('address', ucwords(strtolower($paciente->address ?? '')), array('class' => 'mat-input')) }}
             </div>
         </div>
         <div class="col-md-6 pb-3">
             <div class="mat-div is-completed">
                 <label for="first-name" class="mat-label">Teléfono</label>
-                {{ Form::text('phone', ucwords(strtolower($paciente->phone)), array('class' => 'mat-input')) }}
+                {{ Form::text('phone', ucwords(strtolower($paciente->phone ?? '')), array('class' => 'mat-input')) }}
             </div>
         </div>
         <div class="col-md-4 pb-3">
@@ -21,13 +21,13 @@
         <div class="col-md-4 pb-3">
             <div class="mat-div is-completed">
                 <label for="first-name" class="mat-label">Ciudad</label>
-                {{ Form::select('id_area', $json_municipio['paciente'], $paciente->id_area, array('class' => 'mat-input', 'id' => 'munpac_cmb')) }}
+                {{ Form::select('id_area', $json_municipio['paciente'], $paciente->id_area ?? '', array('class' => 'mat-input', 'id' => 'munpac_cmb')) }}
             </div>
         </div>
         <div class="col-md-4 pb-3">
             <div class="mat-div is-completed">
                 <label for="first-name " class="mat-label">Zona</label>
-                {{ Form::select('zone', $json_zona, $paciente->zone, array('class' => 'mat-input')) }}
+                {{ Form::select('zone', $json_zona, $paciente->zone ?? '', array('class' => 'mat-input')) }}
             </div>
         </div>
 

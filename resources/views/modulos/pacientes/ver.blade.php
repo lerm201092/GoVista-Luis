@@ -101,16 +101,16 @@
                     <a class="nav-link active" data-toggle="tab" href="#tab1-show"><span class="	fas fa-address-card mr-2"></span><span class="text-tab">Datos Personales</span></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" data-toggle="tab" href="#tab2-show"><span class="	fas fa-briefcase-medical mr-2"></span><span class="text-tab d-none">Afiliación</span></a>
+                    <a class="nav-link" data-toggle="tab" href="#tab2-show"><span class="	fas fa-briefcase-medical mr-2"></span><span class="text-tab">Afiliación</span></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" data-toggle="tab" href="#tab3-show"><span class="fas fa-phone mr-2"></span><span class="text-tab d-none">Contacto</span></a>
+                    <a class="nav-link" data-toggle="tab" href="#tab3-show"><span class="fas fa-phone mr-2"></span><span class="text-tab">Contacto</span></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" data-toggle="tab" href="#tab4-show"><span class="fas fa-phone-slash mr-2"></span><span class="text-tab d-none">Contacto Emergencia</span></a>
+                    <a class="nav-link" data-toggle="tab" href="#tab4-show"><span class="fas fa-phone-slash mr-2"></span><span class="text-tab">Contacto Emergencia</span></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" data-toggle="tab" href="#tab5-show"><span class="fas fa-users mr-2"></span><span class="text-tab d-none">Datos Padres</span></a>
+                    <a class="nav-link" data-toggle="tab" href="#tab5-show"><span class="fas fa-users mr-2"></span><span class="text-tab">Datos Padres</span></a>
                 </li>
             </ul>
 
@@ -146,10 +146,10 @@
       $(this).parent().removeClass("is-active");
     })
 
-    $("#tabs-ver .nav-item").click(function(){
-        $("#tabs-ver .nav-item .nav-link .text-tab").addClass('d-none');
-        $(this).children('.nav-link').children('.text-tab').removeClass('d-none')
-    });
+    // $("#tabs-ver .nav-item").click(function(){
+    //     $("#tabs-ver .nav-item .nav-link .text-tab").addClass('d-none');
+    //     $(this).children('.nav-link').children('.text-tab').removeClass('d-none')
+    // });
 
 </script>
 

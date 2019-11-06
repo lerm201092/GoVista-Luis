@@ -190,11 +190,10 @@ box-shadow: 1px 0px 5px 3px rgba(0,0,0,0.3);width:250px;right:30px;display:none;
                 </p>
                 </a>
             </li>
-            <li class="nav-item ">
-                <a href="#" class="nav-link">
-                
+            <li class="nav-item" id="li-citas">
+            <a href="{{ route('modulos.citas.listado') }}" class="nav-link">
+                <span class="nav-icon fas fa-users"></span>
                 <p>
-                    <span class="nav-icon fas fa-user-friends"></span>
                     Citas
                 </p>
                 </a>

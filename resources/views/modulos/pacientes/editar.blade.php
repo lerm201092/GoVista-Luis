@@ -1,97 +1,7 @@
 @extends('layouts.medico')
 
 @section('head')
-<style>
-
-.mat-label {
-  display: block;
-  font-size: 14px;
-  font-weight:450!important;
-  transform: translateY(25px);
-  color: gray;
-  transition: all 0.2s;
-}
-
-.mat-input {
-  position: relative;
-  background: transparent;
-  width: 100%;
-  border: none;
-  outline: none;
-  padding: 2px 0;
-  font-size: 16px;
-  border-bottom: .5px solid #e4e4e4;
-}
-
-  
-.mat-div {
-  padding: 10px 0 0 0;  
-  position: relative;
-}
-
-.mat-div:after, .mat-div:before {
-  content: "";
-  position: absolute;
-  display: block;
-  width: 100%;
-  height: 2px;
-  background-color: #e2e2e2; 
-  bottom: 0;
-  left: 0;
-  transition: all 0.2s;
-}
-
-.mat-div::after {
-  background-color: #8E8DBE;
-  transform: scaleX(0);
-}
-
-.is-active::after {
-  transform: scaleX(1);
-}
-
-.is-active .mat-label {
-  color: #8E8DBE;
-}
-
-.is-completed .mat-label {
-  font-size: 13px;
-  transform: translateY(0);
-}
-
-.bg-verde{
-    background:#5eb562; 
-}
-
-.bg-amarillo{
-    background:#fc9208; 
-}
-
-.bg-rojo{
-    background:#ec4a47; 
-}
-
-.bg-azul{
-    background:#12b8cd; 
-}
-
-.bg-morado{
-            background:#9c27b0; 
-        }
-
-        ul#tabs-ver .nav-item .nav-link{
-          font-weight:400;
-          color: #aba8a8!important;
-        }
-        ul#tabs-ver  .nav-item .active{
-  font-weight:600;
-  color: #9c27b0!important;
-}
-
-
-
-	
-	</style>
+  <link href="{{ asset('css/PacientesEditar.css') }}" rel="stylesheet">
 @endsection
 
 @section('content')
@@ -141,51 +51,11 @@
                 </div>           
               </div>
             </form>
-
-  
-
-    </div>
+         </div>
 </div>
 
 @endsection
 
 @section('script')
-<script>
-
-  $("#li-pacientes").addClass("active");
-  $(".mat-input").focus(function(){
-    $(this).parent().addClass("is-active is-completed");
-  });
-
-  $(".mat-input").focusout(function(){
-    if($(this).val() === "")
-      $(this).parent().removeClass("is-completed");
-      $(this).parent().removeClass("is-active");
-    })
-
-    $("#tabs-ver .nav-item").click(function(){
-        $("#tabs-ver .nav-item .nav-link .text-tab").addClass('d-none');
-        $(this).children('.nav-link').children('.text-tab').removeClass('d-none')
-    });
-
-    function onchange_dpto(dpto_cmb){
-		var sel_dpto      = dpto_cmb.attr("id");
-		var dpto_zona     = dpto_cmb.val();
-		var sel_municipio = dpto_cmb.attr("munid_cmb"), sel_municipio = $("#"+sel_municipio);
-
-		sel_municipio.html("");
-		sel_municipio.append("<option value='0'>- Escoja un municipio -</option>");
-		$.ajax({
-			type: 'GET',
-			url: "{!!URL::to('/Areas/municipios')!!}",
-			data: {'dpto_zona': dpto_zona},
-			success: function (data) {
-				$.each(data, function (i, json) {
-					sel_municipio.append("<option value='"+json.id+"'>"+json.nomarea+"</option>");
-				});                      
-			}
-		});
-    }
-</script>
-
+  <script src="{{ asset('js/PacientesEditar.js') }}" defer></script>
 @endsection
