@@ -75,7 +75,7 @@
                                             <span style="float:left">
                                                 {!! Form::open(['method' => 'GET', 'url' => '/modulos/pacientes/bf_editar', 'class' => 'navbar-form navbar-right'])  !!}
                                                 <input type="hidden" id="PacienteId" name="PacienteId" value="{{ $item->id }}" />                                            
-                                                <button style="background:transparent; border:none;" class="cl-morado" title="Editar información del paciente"><i class="fa fa-pencil"></i></button>
+                                                <button style="background:transparent; border:none;" class="cl-morado" title="Editar información del paciente"><i class="fas fa-pencil-alt"></i></button>
                                                 {!! Form::close() !!}
                                             </span>
                                         </td>
@@ -104,5 +104,5 @@
 @endsection
 
 @section('script')
-    <script src="{{ asset('js/PacientesEditar.js') }}" defer></script>
+    <script src="{{ asset('js/PacientesListar.js') }}" defer></script>
 @endsection

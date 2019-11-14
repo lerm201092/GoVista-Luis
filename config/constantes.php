@@ -24,5 +24,11 @@ return [
         'U' => 'Urbana',
         'R' => 'Rural'
     ],
+    'estado_cita' => [
+        'AC' => 'Activa',
+        'CA' => 'Cancelada',
+        'RE' => 'Realizada',
+        'IN' => 'Inactiva'
+    ],
 ];
 ?>

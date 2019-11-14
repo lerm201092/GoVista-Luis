@@ -45,6 +45,8 @@ class PacientesController extends Controller
         return redirect()->route('modulos.pacientes.editar', ['PacienteId' => $request->PacienteId ? $request->PacienteId : '0']);
     }
 
+    
+
     public function update(Request $request, $id){
         $requestData = $request->all();
         $paciente = Paciente::findOrFail($id);
@@ -167,11 +169,17 @@ class PacientesController extends Controller
 
 
 
-    public function buscar($keyword){
+    public function buscar($keyword){        
+        $patients = self::buscarPaciente($keyword);
+        return view('modulos.pacientes.listar', compact('patients'))->with('texto', $keyword);                    
+    }
+
+
+    public function buscarPaciente(Request $request){
+        $keyword = $request->keyword;
         $this->id_empresa = Session::get('id_empresa');
         $perPage=15;
-
-        $patients = Paciente::from('patients as p')
+        $pacientes = Paciente::from('patients as p')
                     ->select('p.id','p.tipodoc','p.numdoc','p.name1','p.name2','p.surname1','p.surname2','p.state','a.nomarea as munic','d.nomarea as dpto')
                     ->leftJoin('areas as a', 'p.id_Area', '=', 'a.id')
                     ->leftJoin('areas as d', 'a.padre', '=', 'd.id')
@@ -187,8 +195,8 @@ class PacientesController extends Controller
                     ->orderBy('surname2', 'asc')
                     ->orderBy('name1', 'asc')
                     ->orderBy('name2', 'asc')
-                    ->paginate($perPage);        
-        return view('modulos.pacientes.listar', compact('patients'))->with('texto', $keyword);                    
+                    ->paginate($perPage); 
+        return compact('pacientes');
     }
 
     public function queryEPS(){
@@ -201,6 +209,7 @@ class PacientesController extends Controller
         }
         $this->json_eps = $row;
     }
+
 
     //********************     AREA DEL PACIENTE       **************
     public function queryArea($PacienteId){

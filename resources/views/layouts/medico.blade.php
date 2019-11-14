@@ -86,7 +86,7 @@ box-shadow: 1px 0px 5px 3px rgba(0,0,0,0.3);width:250px;right:30px;display:none;
             line-height:32px;
         }
 
-        textarea:focus,
+        /* textarea:focus,
         input[type="text"]:focus,
         input[type="password"]:focus,
         input[type="datetime"]:focus,
@@ -106,7 +106,7 @@ box-shadow: 1px 0px 5px 3px rgba(0,0,0,0.3);width:250px;right:30px;display:none;
             box-shadow: 0 1px 1px transparent inset, 0 0 8px transparent;
             outline: 0 none;
             border-bottom: 2px solid #9c27b0;
-        }
+        } */
 
     </style>
   <!-- Estilos propios del contenedor -->
