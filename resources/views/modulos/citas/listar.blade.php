@@ -178,7 +178,7 @@ ul#tabs-ver .nav-item .nav-link{
                                                         {!! Form::close() !!}
                                                     </span>
                                                     <span style="float:left">
-                                                        {!! Form::open(['method' => 'GET', 'url' => '/modulos/citas/bf_editar', 'class' => 'navbar-form navbar-right'])  !!}
+                                                        {!! Form::open(['method' => 'GET', 'url' => '/modulos/historiaclinica/bf_crear', 'class' => 'navbar-form navbar-right'])  !!}
                                                             <input type="hidden" id="CitaId" name="CitaId" value="{{ $item->id }}" />                                            
                                                             <button style="background:transparent; border:none;" class="cl-verde" title="Iniciar consulta"><i class="fas fa-angle-double-right"></i></button>
                                                         {!! Form::close() !!}

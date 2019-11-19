@@ -38,9 +38,10 @@ Route::get('/Areas/municipios','Modulos\\PacientesController@queryMunicipio_onch
 
 
 //HISTORIAS CLINICAS - VISTAS
-Route::get('/modulos/historiaclinica/listado', 'Modulos\\CitasController@listar')->name('modulos.historiaclinica.listado');
+Route::get('/modulos/historiaclinica/crear/{CitaId?}', 'Modulos\\HistoriasController@crear')->name('modulos.historiaclinica.crear');
 
-
+// HISTORIAS CLINICAS - FUNCIONES
+Route::get('/modulos/historiaclinica/bf_crear','Modulos\\HistoriasController@beforeCrear')->name('modulos.historiaclinica.bf_crear');
 
 //fullcalender
 Route::get('fullcalendar','CitasController@calendar');

@@ -198,7 +198,7 @@ box-shadow: 1px 0px 5px 3px rgba(0,0,0,0.3);width:250px;right:30px;display:none;
                 </p>
                 </a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item" id="li-historias">
                 <a href="#" class="nav-link">
                 <span class="nav-icon fas fa-user-friends"></span>
                 <p>
