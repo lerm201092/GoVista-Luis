@@ -124,7 +124,6 @@ ul#tabs-ver .nav-item .nav-link{
                                 <span class="text-tab">Calendario</span>
                             </a>
                         </li>
-
                     </ul>
 
                     <!-- contenedor de los tabs -->
@@ -140,12 +139,12 @@ ul#tabs-ver .nav-item .nav-link{
                                         <span class="fa fa-plus"></span>
                                     </a>
                                 </div>
-                                <div class="col-md-8 text-right">
+                                <!-- <div class="col-md-8 text-right">
                                     {!! Form::open(['method' => 'GET', 'url' => '/modulos/pacientes/bf_buscar', 'class' => 'navbar-form navbar-right'])  !!}                            
                                         <input required type="text" id="buscar" name="buscar" class="txt" placeholder="Buscar Paciente ..." value="">
                                         <button class="ml-2 btn bg-morado text-light mb-2" style="border-radius:50%" title="Buscar Paciente"><span class="fa fa-search"></span></button>
                                     {!! Form::close() !!}
-                                </div>
+                                </div> -->
                             </div>
 
                             <table id="tbl-pacientes" class="table">

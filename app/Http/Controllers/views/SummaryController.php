@@ -12,7 +12,7 @@ use App\Model\Medico;
 use App\Model\Empresa;
 use App\Model\Paciente;
 use App\Model\Cita;
-use App\Model\History;
+use App\Model\Historia;
 
 use Session;
 use Log;
@@ -58,10 +58,10 @@ class SummaryController extends Controller
                                     ->where('id_empresa', '=', $id_empresa)
                                     ->where('state', '=', 'IN')->get()->count();	
                                     
-            $qty_exe                = History::from('histories as h')
+            $qty_exe                = Historia::from('histories as h')
                                     ->select('e.status', DB::raw('count(e.id_exercise) as cant'))
                                     ->leftJoin('history_exercises as e', 'h.id', '=', 'e.id_history')		
-                                    ->where('h.id_medico', '=',  $id_medico->id)			 
+                                    // ->where('h.id_medico', '=',  $id_medico->id)			 
                                     ->where('h.id_empresa', '=', $id_empresa)
                                     ->where('h.state', '=', 'AC')
                                     ->groupBy('e.status')
@@ -86,17 +86,9 @@ class SummaryController extends Controller
             ->with('EjerciciosIncumplidos', $totalEjerciciosIncumplidos)
             ->with('EjerciciosRealizados', $totalEjerciciosRealizados) 
             ;
-
-            // return Auth::user()->id_medico;
         }
 
-        // return "HOLA";
-        
-
-   
-
-        // return $TotalCitasActivas." - ".$TotalPacientes." - ".$TotalPacientesActivos." - ".$TotalPacientesInactivos." - ".$totalEjerciciosAsignados
-        // ." - ".$totalEjerciciosActivos." - ".$totalEjerciciosIncumplidos." - ".$totalEjerciciosRealizados;        
+      
     }
 
     public function idPaciente()

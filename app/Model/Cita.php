@@ -26,6 +26,4 @@ class Cita extends Model
      * @var array
      */
     protected $fillable = ['id', 'id_patient', 'title', 'body', 'id_medico', 'id_empresa', 'fullday', 'start', 'end', 'color', 'state', 'created_user', 'updated_user'];
-
-    
 }

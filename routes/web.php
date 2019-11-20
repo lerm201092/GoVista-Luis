@@ -1,6 +1,6 @@
 <?php
 
-Route::get('/', function () { return view('welcome'); });
+Route::get('/', function () { return view(''); });
 
 Auth::routes();
 Route::get('/summary', 'Views\\SummaryController@index')->name('summary');
@@ -39,6 +39,8 @@ Route::get('/Areas/municipios','Modulos\\PacientesController@queryMunicipio_onch
 
 //HISTORIAS CLINICAS - VISTAS
 Route::get('/modulos/historiaclinica/crear/{CitaId?}', 'Modulos\\HistoriasController@crear')->name('modulos.historiaclinica.crear');
+Route::get('/modulos/historiaclinica/listado', 'Modulos\\HistoriasController@listar')->name('modulos.historiaclinica.listado');
+Route::put('/modulos/historiaclinica/insert', 'Modulos\\HistoriasController@insert')->name('modulos.historiaclinica.insert');
 
 // HISTORIAS CLINICAS - FUNCIONES
 Route::get('/modulos/historiaclinica/bf_crear','Modulos\\HistoriasController@beforeCrear')->name('modulos.historiaclinica.bf_crear');

@@ -14,11 +14,15 @@ use Illuminate\Support\Facades\Session;
 use App\Model\Medico;
 use App\Model\Cita;
 use App\Model\Paciente;
+use App\Model\Historia;
+use App\Model\Historia_Aa;
 
 use Carbon\Carbon;
  
 class HistoriasController extends Controller{
     public $id_empresa;
+    public $id_user;
+    public $rol_user;
 
     public function __construct(){    
         $this->middleware('auth');
@@ -28,33 +32,31 @@ class HistoriasController extends Controller{
         return redirect()->route('modulos.historiaclinica.crear', ['CitaId' => $request->CitaId ? $request->CitaId : '0']);
     }
 
-    public function crear($CitaId){
-        return count(['id','historydate','id_empresa', 'id_appointment',
-                    'am_desc', 'ana_motcon', 'ana_enfact', 'av_tiplen', 'av_color', 'av_filtro', 'av_usolen', 'av_esfera_oi',
-                    'av_esfera_od', 'av_cilindro_oi', 'av_cilindro_od', 'av_eje_oi', 'av_eje_od', 'av_prisma_oi',
-                    'av_prisma_od', 'av_base_oi', 'av_base_od', 'av_avc_cc_oi', 'av_avc_cc_od', 'av_avc_sc_oi',
-                    'av_avc_sc_od', 'av_avl_cc_oi', 'av_avl_cc_od', 'av_avl_sc_oi', 'av_avl_sc_od', 'av_ojodom',
-                    'av_manodom', 'av_angkap_oi', 'av_angkap_od', 'av_ppc_or', 'av_ppc_sf', 'av_fija_oi', 
-                    'av_fija_od', 'av_ctest_lej', 'av_ctest_cer', 'av_distint', 'av_obser', 'fo_ofmeri1_oi',
-                    'fo_ofmeri1_od', 'fo_ofmeri2_oi', 'fo_ofmeri2_od', 'fo_ofeje_oi', 'fo_ofeje_od', 'fo_ofobser_oi',
-                    'fo_ofobser_od', 'fo_rettecusa', 'fo_retesf_oi', 'fo_retesf_od', 'fo_retcil_oi', 'fo_retcil_od',
-                    'fo_reteje_oi', 'fo_reteje_od', 'fo_retcomp_oi', 'fo_retcomp_od', 'fo_retobserv_oi', 'fo_retobserv_od',
-                    'fo_tsubesf_oi', 'fo_tsubesf_od', 'fo_tsubcil_oi', 'fo_tsubcil_od', 'fo_tsubeje_oi', 'fo_tsubeje_od',
-                    'fo_tsubpris_oi', 'fo_tsubpris_od', 'fo_tsubadd_oi', 'fo_tsubadd_od', 'fo_tsubavc_vl_oi', 'fo_tsubavc_vl_od',
-                    'fo_tsubavc_vp_oi', 'fo_tsubavc_vp_od', 'mo_lucesw', 'mo_dist', 'mo_ojosuprime', 'mo_bagolini',
-                    'mo_cosen_cer', 'mo_cosen_lej', 'mo_esttest', 'mo_estrfnv_vl', 'mo_estrfnv_vp', 'mo_estrfp_vl',
-                    'mo_estrfp_vp', 'mo_est_aavl_oi_1', 'mo_est_aavl_oi_2', 'mo_est_aavl_oi_3', 'mo_est_aavl_oi_4',
-                    'mo_est_aavl_oi_5', 'mo_est_aavl_oi_6', 'mo_est_aavl_oi_7', 'mo_est_aavl_oi_8', 'mo_est_aavl_oi_9',
-                    'mo_est_aavl_od_1', 'mo_est_aavl_od_2', 'mo_est_aavl_od_3', 'mo_est_aavl_od_4', 'mo_est_aavl_od_5',
-                    'mo_est_aavl_od_6', 'mo_est_aavl_od_7', 'mo_est_aavl_od_8', 'mo_est_aavl_od_9', 'mo_est_aavp_oi_1',
-                    'mo_est_aavp_oi_2', 'mo_est_aavp_oi_3', 'mo_est_aavp_oi_4', 'mo_est_aavp_oi_5', 'mo_est_aavp_oi_6',
-                    'mo_est_aavp_oi_7', 'mo_est_aavp_oi_8', 'mo_est_aavp_oi_9', 'mo_est_aavp_od_1', 'mo_est_aavp_od_2',
-                    'mo_est_aavp_od_3', 'mo_est_aavp_od_4', 'mo_est_aavp_od_5', 'mo_est_aavp_od_6', 'mo_est_aavp_od_7',
-                    'mo_est_aavp_od_8', 'mo_est_aavp_od_9', 'mo_estnivvis_oi', 'mo_estnivvis_od', 'mo_esttecnica',
-                    'mo_estflex_oi', 'mo_estflex_od', 'diag_principal', 'diag_rel_1', 'diag_rel_2', 'diag_rel_3',
-                    'diag_compli', 'diag_finconsul','state','created_user','updated_user']);
+    public function listar(Request $request){
         $this->id_empresa = Session::get('id_empresa');
+        $this->id_user    = Auth::user()->id;
+        $this->rol_user   = Auth::user()->roluser;
 
+        $keyword = $request->get('search');
+        $perPage = 25;
+
+        $historias = Historia::from('histories as h')
+            ->select('h.id', 'h.historydate', 'p.surname1', 'p.surname2', 'p.name1', 'p.name2', 'm.name', 'h.state', 'p.tipodoc', 'p.numdoc', 'a.id_patient', 'm.name')
+            ->leftJoin('medicos as m', 'h.id_medico', '=', 'm.id')
+            ->leftJoin('appointments as a', 'h.id_appointment', '=', 'a.id')
+            ->leftJoin('patients as p', 'a.id_patient', '=', 'p.id')
+            ->where('h.id_empresa', '=', "$this->id_empresa")
+            ->paginate($perPage);
+
+        return view('modulos.historias.listar', compact('historias'))->with( 'texto', '')->with('medico');
+    }
+
+    public function crear($CitaId){
+        $this->id_empresa = Session::get('id_empresa');
+        $this->id_user    = Auth::user()->id;
+
+        $medico = Medico::InfoMedico($this->id_user);
+        $id_medico = $medico["id"];
         $cita = DB::select("SELECT p.tipodoc, p.numdoc, p.birthdate, ". 
                                     "CONCAT(p.name1, ' ', p.name2, ' ',p.surname1, ' ', p.surname2) AS paciente,".
                                     "p.birthdate,".
@@ -62,15 +64,33 @@ class HistoriasController extends Controller{
                                 "FROM appointments a, patients p, medicos m ".
                                 "WHERE  a.id = ? ".
                                     "AND a.id_patient = p.id ".
-                                    "AND a.id_medico = m.id ", [$CitaId]);
+                                    "AND a.id_medico = m.id ", [$CitaId]);                           
         $cita = $cita[0];
         $fechaCita = new Carbon($cita->start);
         $fechaCita = $fechaCita->format('d-m-Y h:i');
         $edad = Carbon::parse($cita->birthdate)->age;
+
         return view('modulos.historias.crear')
-                ->with(  'id_empresa', $this->id_empresa )
-                ->with(  'edad', $edad )
-                ->with( 'cita' , compact('cita'))
-                ->with( 'fechaCita', $fechaCita );
+                ->with( 'id_empresa', $this->id_empresa )
+                ->with( 'edad',       $edad )
+                ->with( 'cita' ,      compact('cita'))
+                ->with( 'id_cita' ,   $CitaId )
+                ->with( 'fechaCita',  $fechaCita )
+                ->with( 'id_medico',  $id_medico );
+    }
+
+    public function insert(Request $request){
+        date_default_timezone_set('America/Bogota');
+        $requestData = $request->all();
+        $requestData['historydate'] = Carbon::now();   
+        $x = Historia::create($requestData);
+        $requestData['id_histories'] = $x->id;        
+        Historia_Aa::create($requestData);
+        $cita = Cita::findOrFail($request->id_appointment);
+        $NombrePaciente = Paciente::NombrePaciente($cita->id_patient);
+        $cita->update(['state' => 'RE']);
+        return redirect('modulos/citas/listado')
+        ->with('mensaje', "¡Se ha generado la historia clinica satisfactoriamente!")
+        ->with('nompaciente', $NombrePaciente );
     }
 }

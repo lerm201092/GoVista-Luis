@@ -227,13 +227,14 @@
                 </li>
             </ul>
 
-            <form action="{{ route('modulos.pacientes.insert') }}" method="POST">
+            <form action="{{ route('modulos.historiaclinica.insert') }}" method="POST">
 				@method('put')
 				@csrf
-                
-                {!! Form::hidden('created_user', Auth::user()->username, ['class' => 'form-control']) !!}
-                {!! Form::hidden('id_empresa', $id_empresa, ['class' => 'form-control']) !!}
-                {!! Form::hidden('updated_user', Auth::user()->username, ['class' => 'form-control']) !!}	
+                {!! Form::hidden('id_medico',      $id_medico, ['class' => 'form-control']) !!}
+                {!! Form::hidden('created_user',   Auth::user()->username, ['class' => 'form-control']) !!}
+                {!! Form::hidden('id_empresa',     $id_empresa, ['class' => 'form-control']) !!}
+                {!! Form::hidden('updated_user',   Auth::user()->username, ['class' => 'form-control']) !!}	
+                {!! Form::hidden('id_appointment', $id_cita, ['class' => 'form-control']) !!}	
 
                 <!-- Tab panes -->
                 <div class="tab-content p-0" style="border:1px solid #dee2e6; border-top: none">
