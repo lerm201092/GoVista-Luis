@@ -199,21 +199,21 @@ box-shadow: 1px 0px 5px 3px rgba(0,0,0,0.3);width:250px;right:30px;display:none;
                 </a>
             </li>
             <li class="nav-item" id="li-historias">
-                <a href="#" class="nav-link">
+            <a href="{{ route('modulos.historiaclinica.listado') }}" class="nav-link">
                 <span class="nav-icon fas fa-user-friends"></span>
                 <p>
                     Historias Clinicas
                 </p>
                 </a>
             </li>
-            <li class="nav-item">
+            <!-- <li class="nav-item">
                 <a href="#" class="nav-link">
                 <span class="nav-icon 	fa fa-gamepad"></span>
                 <p>
                     Ejercicios
                 </p>
                 </a>
-            </li>
+            </li> -->
             <!-- <li class="nav-item has-treeview">
                 <a href="#" class="nav-link">
                 <i class="nav-icon far fa-plus-square"></i>

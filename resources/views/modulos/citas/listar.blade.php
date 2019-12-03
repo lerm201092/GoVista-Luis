@@ -1,4 +1,4 @@
-@extends('layouts.medico')
+@extends( Session::get('roluser') ==  3 ? 'layouts.medico' : 'layouts.paciente')
 
 @section('head')
 <style>
@@ -170,18 +170,20 @@ ul#tabs-ver .nav-item .nav-link{
                                                             <button style="background:transparent; border:none;" class="cl-azul" title="Ver información del paciente"><i class="fa fa-eye"></i></button>
                                                         {!! Form::close() !!}
                                                     </span>
-                                                    <span style="float:left">
-                                                        {!! Form::open(['method' => 'GET', 'url' => '/modulos/citas/bf_editar', 'class' => 'navbar-form navbar-right'])  !!}
-                                                            <input type="hidden" id="CitaId" name="CitaId" value="{{ $item->id }}" />                                            
-                                                            <button style="background:transparent; border:none;" class="cl-morado" title="Editar información del paciente"><i class="fas fa-pencil-alt"></i></button>
-                                                        {!! Form::close() !!}
-                                                    </span>
-                                                    <span style="float:left">
-                                                        {!! Form::open(['method' => 'GET', 'url' => '/modulos/historiaclinica/bf_crear', 'class' => 'navbar-form navbar-right'])  !!}
-                                                            <input type="hidden" id="CitaId" name="CitaId" value="{{ $item->id }}" />                                            
-                                                            <button style="background:transparent; border:none;" class="cl-verde" title="Iniciar consulta"><i class="fas fa-angle-double-right"></i></button>
-                                                        {!! Form::close() !!}
-                                                    </span>
+                                                    @if(Auth::user()->roluser == 3)
+                                                        <span style="float:left">
+                                                            {!! Form::open(['method' => 'GET', 'url' => '/modulos/citas/bf_editar', 'class' => 'navbar-form navbar-right'])  !!}
+                                                                <input type="hidden" id="CitaId" name="CitaId" value="{{ $item->id }}" />                                            
+                                                                <button style="background:transparent; border:none;" class="cl-morado" title="Editar información del paciente"><i class="fas fa-pencil-alt"></i></button>
+                                                            {!! Form::close() !!}
+                                                        </span>
+                                                        <span style="float:left">
+                                                            {!! Form::open(['method' => 'GET', 'url' => '/modulos/historiaclinica/bf_crear', 'class' => 'navbar-form navbar-right'])  !!}
+                                                                <input type="hidden" id="CitaId" name="CitaId" value="{{ $item->id }}" />                                            
+                                                                <button style="background:transparent; border:none;" class="cl-verde" title="Iniciar consulta"><i class="fas fa-angle-double-right"></i></button>
+                                                            {!! Form::close() !!}
+                                                        </span>
+                                                    @endif
                                                 </td>
                                             </tr>
                                         @endforeach

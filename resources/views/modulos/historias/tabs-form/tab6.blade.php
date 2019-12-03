@@ -7,28 +7,60 @@
                 <div class="col-12 mb-4">
                     <div class="mat-div">
                         <label for="first-name" class="mat-label">Diagnostico Principal</label>
-                        {!! Form::text('diag_principal', null, array('class' => 'mat-input')) !!}
+                        <select name="diag_principal" class="mat-input">
+                            @foreach ($rips as $itemKey => $itemValue)
+                                    @if ( isset($historyFill) && $itemValue ==  $historyFill->rips )
+                                    <option value="{{ $itemKey }}" selected>{{$itemValue}}@if($itemValue != null)&#176; @endif</option>
+                                @else
+                                    <option value="{{ $itemKey }}"><b>@if($itemValue != null)[ {{$itemKey}} ] @endif</b>{{$itemValue}}</option>
+                                @endif
+                            @endforeach
+                        </select>
                     </div>
                 </div>
 
                 <div class="col-12 mb-4">
                     <div class="mat-div">
                         <label for="first-name" class="mat-label">Diagnostico Relacional 1</label>
-                        {!! Form::text('diag_rel_1', null, array('class' => 'mat-input')) !!}
+                        <select name="diag_rel_1" class="mat-input">
+                            @foreach ($rips as $itemKey => $itemValue)
+                                    @if ( isset($historyFill) && $itemValue ==  $historyFill->rips )
+                                    <option value="{{ $itemKey }}" selected>{{$itemValue}}@if($itemValue != null)&#176; @endif</option>
+                                @else
+                                    <option value="{{ $itemKey }}"><b>@if($itemValue != null)[ {{$itemKey}} ] @endif</b>{{$itemValue}}</option>
+                                @endif
+                            @endforeach
+                        </select>
                     </div>
                 </div>
 
                 <div class="col-12 mb-4">
                     <div class="mat-div">
                         <label for="first-name" class="mat-label">Diagnostico Relacional 2</label>
-                        {!! Form::text('diag_rel_2', null, array('class' => 'mat-input')) !!}
+                        <select name="diag_rel_2" class="mat-input">
+                            @foreach ($rips as $itemKey => $itemValue)
+                                    @if ( isset($historyFill) && $itemValue ==  $historyFill->rips )
+                                    <option value="{{ $itemKey }}" selected>{{$itemValue}}@if($itemValue != null)&#176; @endif</option>
+                                @else
+                                    <option value="{{ $itemKey }}"><b>@if($itemValue != null)[ {{$itemKey}} ] @endif</b>{{$itemValue}}</option>
+                                @endif
+                            @endforeach
+                        </select>
                     </div>
                 </div>
 
                 <div class="col-12 mb-4">
                     <div class="mat-div">
                         <label for="first-name" class="mat-label">Diagnostico Relacional 3</label>
-                        {!! Form::text('diag_rel_3', null, array('class' => 'mat-input')) !!}
+                        <select name="diag_rel_3" class="mat-input">
+                            @foreach ($rips as $itemKey => $itemValue)
+                                    @if ( isset($historyFill) && $itemValue ==  $historyFill->rips )
+                                    <option value="{{ $itemKey }}" selected>{{$itemValue}}@if($itemValue != null)&#176; @endif</option>
+                                @else
+                                    <option value="{{ $itemKey }}"><b>@if($itemValue != null)[ {{$itemKey}} ] @endif</b>{{$itemValue}}</option>
+                                @endif
+                            @endforeach
+                        </select>
                     </div>
                 </div>
 

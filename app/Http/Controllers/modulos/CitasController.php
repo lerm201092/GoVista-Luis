@@ -21,6 +21,7 @@ class CitasController extends Controller{
 
     public $id_empresa;
     public $json_estado;
+    public $rol_user;
 
     public function __construct(){    
         $this->id_empresa = Session::get('id_empresa');
@@ -63,37 +64,62 @@ class CitasController extends Controller{
     public function listar(Request $request){
         $this->id_empresa = Session::get('id_empresa');
         $this->id_user    = Auth::user()->id;
+        $this->rol_user    = Auth::user()->roluser;
         $id_medico = self::idMedico();
+        $id_paciente = self::idPaciente();
 
         $keyword = $request->get('search');
         $perPage = 10;
 
+        if( $this->rol_user == 3 ) { // rol = Medico
+            $citas = Cita::from('appointments as a')
+            ->select('a.id', 'a.id_patient', 'a.title', 'a.body', 'a.id_medico', 'a.state', 'a.start', 'a.end', 'm.name', 'p.name1', 'p.surname1')
+            ->leftJoin('patients as p', 'a.id_patient', '=', 'p.id')
+            ->leftJoin('medicos as m', 'a.id_medico', '=', 'm.id')
+            ->where('a.id_empresa', '=', "$this->id_empresa")
+            ->where('a.id_medico', '=', $id_medico)
+            ->whereIn('a.state',['AC','IC'])
+            ->where(function ($query) use($keyword) {
+                $query->orWhere('title', 'LIKE', "%$keyword%")
+                    ->orWhere('m.name', 'LIKE', "%$keyword%")
+                    ->orWhere('p.name1', 'LIKE', "%$keyword%")
+                    ->orWhere('p.surname1', 'LIKE', "%$keyword%")
+                    ->orWhere('start', 'LIKE', "%$keyword%");
+            })
+            ->paginate($perPage);
 
-        $citas = Cita::from('appointments as a')
-        ->select('a.id', 'a.id_patient', 'a.title', 'a.body', 'a.id_medico', 'a.state', 'a.start', 'a.end', 'm.name', 'p.name1', 'p.surname1')
-        ->leftJoin('patients as p', 'a.id_patient', '=', 'p.id')
-        ->leftJoin('medicos as m', 'a.id_medico', '=', 'm.id')
-        ->where('a.id_empresa', '=', "$this->id_empresa")
-        ->where('a.id_medico', '=', $id_medico)
-        ->whereIn('a.state',['AC','IC'])
-        ->where(function ($query) use($keyword) {
-            $query->orWhere('title', 'LIKE', "%$keyword%")
-                ->orWhere('m.name', 'LIKE', "%$keyword%")
-                ->orWhere('p.name1', 'LIKE', "%$keyword%")
-                ->orWhere('p.surname1', 'LIKE', "%$keyword%")
-                ->orWhere('start', 'LIKE', "%$keyword%");
-        })
-        ->paginate($perPage);
+            $json_citas = Cita::from('appointments as a')
+            ->select('a.id', DB::raw("CONCAT(p.name1,' ', p.surname1) as title"), 'a.title as titulo' , 'a.body', 'a.start')
+            ->leftJoin('patients as p', 'a.id_patient', 'p.id')
+            ->leftJoin('medicos  as m', 'a.id_medico' , 'm.id')
+            ->where('a.id_medico', '=', $id_medico)->get();
+        }
 
-        
+        if( $this->rol_user == 4 ) { // rol = Paciente
+            $citas = Cita::from('appointments as a')
+            ->select('a.id', 'a.id_patient', 'a.title', 'a.body', 'a.id_medico', 'a.state', 'a.start', 'a.end', 'm.name', 'p.name1', 'p.surname1')
+            ->leftJoin('patients as p', 'a.id_patient', '=', 'p.id')
+            ->leftJoin('medicos as m', 'a.id_medico', '=', 'm.id')
+            ->where('a.id_empresa', '=', "$this->id_empresa")
+            ->where('a.id_patient', '=', $id_paciente)
+            ->whereIn('a.state', ['AC'])
+            ->where(function ($query) use($keyword) {
+                $query->orWhere('title', 'LIKE', "%$keyword%")
+                    ->orWhere('m.name', 'LIKE', "%$keyword%")
+                    ->orWhere('p.name1', 'LIKE', "%$keyword%")
+                    ->orWhere('p.surname1', 'LIKE', "%$keyword%")
+                    ->orWhere('start', 'LIKE', "%$keyword%");
+            })
+            ->paginate($perPage);
 
-        $json_citas = Cita::from('appointments as a')
-        ->select('a.id', DB::raw("CONCAT(p.name1,' ', p.surname1) as title"), 'a.title as titulo' , 'a.body', 'a.start')
-        ->leftJoin('patients as p', 'a.id_patient', 'p.id')
-        ->leftJoin('medicos  as m', 'a.id_medico' , 'm.id')
-        ->where('a.id_medico', '=', $id_medico)->get();
+            $json_citas = Cita::from('appointments as a')
+            ->select('a.id', DB::raw("m.name as title"), 'a.title as titulo' , 'a.body', 'a.start')
+            ->leftJoin('patients as p', 'a.id_patient', 'p.id')
+            ->leftJoin('medicos  as m', 'a.id_medico' , 'm.id')
+            ->where('a.id_patient', '=', $id_paciente)->get();
+        }
 
-        // return $json_citas;
+
 
         return view('modulos.citas.listar', compact('citas'))->with('json_citas', $json_citas);
     }
@@ -122,12 +148,11 @@ class CitasController extends Controller{
     public function editar( $CitaId ){
 
         $cita = Cita::from('appointments as a')
-        ->select('a.id', 'p.tipodoc', 'p.numdoc', 'p.name1', 'p.surname1', 'a.title', 'a.body', 'm.name', 'a.start', 'p.phone', 'a.state')
-        ->leftJoin('patients as p', 'a.id_patient', 'p.id')
-        ->leftJoin('medicos  as m', 'a.id_medico' , 'm.id')
-        ->where('a.id',  '=', $CitaId)
-        ->get()->first();
-
+            ->select('a.id', 'p.tipodoc', 'p.numdoc', 'p.name1', 'p.surname1', 'a.title', 'a.body', 'm.name', 'a.start', 'p.phone', 'a.state')
+            ->leftJoin('patients as p', 'a.id_patient', 'p.id')
+            ->leftJoin('medicos  as m', 'a.id_medico' , 'm.id')
+            ->where('a.id',  '=', $CitaId)
+            ->get()->first();
         
         $fecha = new Carbon($cita->start);      
         $fecha = $fecha->format('d-m-Y  h:i');
@@ -139,12 +164,23 @@ class CitasController extends Controller{
 
 
     // FUNCION QUE DEVUELVE EL ID DEL MEDICO
-    public function idMedico()
-    {
+    public function idMedico(){
         $this->id_empresa = Session::get('id_empresa');
         $data = Medico::select('id')
             ->where('id_user', '=', $this->id_user)
             ->orderBy('name', 'asc')->get();
+
+        if($data->count()==0){
+            return 0;
+        }else{
+            return $data[0]->id;
+        }
+    }
+
+    // FUNCION QUE DEVUELVE EL ID DEL PACIENTE
+    public function idPaciente(){
+        $data = Paciente::select('id')
+            ->where('id_user', '=', $this->id_user)->get();
 
         if($data->count()==0){
             return 0;

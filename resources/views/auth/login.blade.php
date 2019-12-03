@@ -10,7 +10,7 @@
                 <div class="card-body">
                     <form method="POST" action="{{ route('login') }}">
                         @csrf
-
+                        {!! Form::hidden('roluser', null, array('class' => 'mat-input')) !!}
                         <div class="form-group row">
                             <label for="email" class="col-md-4 col-form-label text-md-right">Usuario:</label>
 
@@ -85,14 +85,24 @@
             if (txtUserName.length > 0) {
                 $("#companies").html("<option value=''>- Escoja una opción -</option>");
                 $.get("{{ asset('/userEmpresa_Login')}}", {id: txtUserName})
-                .done(function (data) {                   
+                .done(function (data) {   
+                    console.log(data);                
                     for (var i = 0; i < data.length; i++) {
-                        op += '<option value="' + data[i].id_empresa + '">' + MaysPrimera(data[i].nombre) + '</option>';
+                        op += '<option value="' + data[i].id_empresa + '" rol="' + data[i].roluser + '">' + MaysPrimera(data[i].nombre) + '</option>';
                     }
                     $("#companies").append(op);
+                    $("#companies").on("change", function(){
+                        
+                        var rol = $("#companies option:selected" ).attr('rol');
+                        $("input[name=roluser]").val(rol);
+                        
+                        
+                    });
                 });
             }
+
         }
+
 
         function MaysPrimera(string){
             string = string.toLowerCase();

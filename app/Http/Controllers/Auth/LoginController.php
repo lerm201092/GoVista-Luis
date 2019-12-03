@@ -52,25 +52,25 @@ class LoginController extends Controller
         $request = request();
         $username = $request->get('id');
         $data = User_Empresa::from('user_empresas as uc')
-            ->select('uc.id_empresa','c.nombre')
+            ->select('uc.id_empresa','c.nombre', 'u.roluser')
             ->leftJoin('users as u', 'uc.id_user', '=', 'u.id')
             ->leftJoin('empresas as c', 'uc.id_empresa', '=', 'c.id')
             ->where('u.username', '=', "$username")
             ->where('uc.state','=','AC')
             ->get();
-
+        
+ 
         return response()->json($data);
-
     }
 
     public function authenticated(Request $request)
     {
-
+        $rol     = $request->get('roluser'); 
         $company = $request->get('companies');
-        $id_empresa_nombre = Empresa::from('empresas as e')->select('*')->where('id', '=', $company)->first();     
-        
-        Session::put('id_empresa', $company);
-        Session::put('id_empresa_nombre', $id_empresa_nombre->nombre);
+        $id_empresa_nombre = Empresa::from('empresas as e')->select('*')->where('id', '=', $company)->first();
+        Session::put('roluser'              , $rol);
+        Session::put('id_empresa'           , $company);
+        Session::put('id_empresa_nombre'    , $id_empresa_nombre->nombre);
         return redirect('/summary');
     }
 }

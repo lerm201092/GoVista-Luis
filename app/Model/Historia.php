@@ -26,7 +26,7 @@ class Historia extends Model
      *
      * @var array
      */
-	protected $fillable =['id','historydate','id_empresa', 'id_medico', 'id_appointment',
+	protected $fillable =['id','historydate','id_empresa', 'id_medico','id_patient', 'id_appointment',
     'am_desc', 'ana_motcon', 'ana_enferact', 'av_tiplen', 'av_color', 'av_filtro', 'av_usolen', 'av_esfera_oi',
     'av_esfera_od', 'av_cilindro_oi', 'av_cilindro_od', 'av_eje_oi', 'av_eje_od', 'av_prisma_oi',
     'av_prisma_od', 'av_base_oi', 'av_base_od', 'av_avc_cc_oi', 'av_avc_cc_od', 'av_avc_sc_oi',

@@ -27,7 +27,8 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <div class="row ml-0 mr-0 mb-4">
+                <p style="color :#869099; font-weight:600; font-size: 19px;">Listado De Historias Clinicas</p>
+                    <!-- <div class="row ml-0 mr-0 mb-4">
                         <div class="col-12 pl-0">
                             <p style="color :#869099; font-weight:600; font-size: 19px;">Listado De Pacientes</p>
                         </div>
@@ -44,7 +45,7 @@
                                 <button class="ml-2 btn bg-morado text-light mb-2" style="border-radius:50%" title="Buscar Paciente"><span class="fa fa-search"></span></button>
                             {!! Form::close() !!}
                         </div>
-                    </div>
+                    </div> -->
 
 
                     <table id="tbl-pacientes" class="table">
@@ -71,15 +72,15 @@
                                         <td>{{ $item->state }}</td>
                                         <td>
                                             <span style="float:left">
-                                                {!! Form::open(['method' => 'GET', 'url' => '/modulos/pacientes/bf_ver', 'class' => 'navbar-form navbar-right'])  !!}
-                                                <input type="hidden" id="PacienteId" name="PacienteId" value="{{ $item->id }}" />                                            
+                                                {!! Form::open(['method' => 'GET', 'url' => '/modulos/historiaclinica/bf_ver', 'class' => 'navbar-form navbar-right'])  !!}
+                                                <input type="hidden" id="HistoriaId" name="HistoriaId" value="{{ $item->id }}" />                                            
                                                 <button style="background:transparent; border:none;" class="cl-azul" title="Ver información del paciente"><i class="fa fa-eye"></i></button>
                                                 {!! Form::close() !!}
                                             </span>
                                             <span style="float:left">
                                                 {!! Form::open(['method' => 'GET', 'url' => '/modulos/pacientes/bf_editar', 'class' => 'navbar-form navbar-right'])  !!}
-                                                <input type="hidden" id="PacienteId" name="PacienteId" value="{{ $item->id }}" />                                            
-                                                <button style="background:transparent; border:none;" class="cl-morado" title="Editar información del paciente"><i class="fas fa-pencil-alt"></i></button>
+                                                <input type="hidden" id="HistoriaId" name="HistoriaId" value="{{ $item->id }}" />                                            
+                                                <button style="background:transparent; border:none;" class="cl-morado" title="Editar información del paciente"><i class="fab fa-microsoft"></i></button>
                                                 {!! Form::close() !!}
                                             </span>
                                         </td>

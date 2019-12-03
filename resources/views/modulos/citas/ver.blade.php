@@ -1,4 +1,4 @@
-@extends('layouts.medico')
+@extends( Session::get('roluser') ==  3 ? 'layouts.medico' : 'layouts.paciente')
 
 @section('head')
 <style>

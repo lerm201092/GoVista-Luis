@@ -14,6 +14,10 @@
     color: gray;
     transition: all 0.2s;
   }
+
+  select{
+      padding-left:5px!important;
+  }
   
   .mat-input {
     position: relative;
@@ -132,6 +136,20 @@
     .mat-input{
         font-size: 14px;
     }
+
+    .li-error{
+        font-size:13px;
+        font-weight: 450px;
+    }
+
+    .error-camp{
+        border-bottom: 2px solid red!important;
+    }
+
+    .error-camp label{
+        color: red!important;
+        font-weight: 600!important;
+    }
     </style>
 
 
@@ -146,7 +164,7 @@
                 <p><strong>¡Advertencias!</strong></p>
                 <ul>
                     @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
+                        <li class="li-error">{{ $error }}</li>
                     @endforeach
                 </ul>
             </div>
@@ -235,7 +253,7 @@
                 {!! Form::hidden('id_empresa',     $id_empresa, ['class' => 'form-control']) !!}
                 {!! Form::hidden('updated_user',   Auth::user()->username, ['class' => 'form-control']) !!}	
                 {!! Form::hidden('id_appointment', $id_cita, ['class' => 'form-control']) !!}	
-
+                {!! Form::hidden('id_patient',     $id_paciente, ['class' => 'form-control']) !!}	
                 <!-- Tab panes -->
                 <div class="tab-content p-0" style="border:1px solid #dee2e6; border-top: none">
                     <div class="tab-pane container active p-4" id="tab1-form"> @include('modulos.historias.tabs-form.tab1')</div>

@@ -5,28 +5,28 @@
                 <div class="col-lg-3 m-0 p-0">
                     <div class="mat-div mx-2">
                         <label for="first-name" class="mat-label">Luces Worth</label>
-                        {!! Form::text('mo_lucesw', null, array('class' => 'mat-input')) !!}
+                        {{ Form::select('mo_lucesw', $LucesWorth , '', array('class' => 'mat-input')) }}
                     </div>
                 </div>
 
                 <div class="col-lg-3 m-0 p-0">
                     <div class="mat-div mx-2">
                         <label for="first-name" class="mat-label">Distancia (cm)</label>
-                        {!! Form::text('mo_dist', null, array('class' => 'mat-input')) !!}
+                        {{ Form::select('mo_dist', $distanciaCM , '', array('class' => 'mat-input')) }}
                     </div>
                 </div>
 
                 <div class="col-lg-3 m-0 p-0">
                     <div class="mat-div mx-2">
                         <label for="first-name" class="mat-label">Ojo que suprime</label>
-                        {!! Form::text('mo_ojosuprime', null, array('class' => 'mat-input')) !!}
+                        {{ Form::select('mo_ojosuprime', $OjoSuprime , '', array('class' => 'mat-input')) }}
                     </div>
                 </div>
 
                 <div class="col-lg-3 m-0 p-0">
                     <div class="mat-div mx-2">
                         <label for="first-name" class="mat-label">Bagolini</label>
-                        {!! Form::text('mo_bagolini', null, array('class' => 'mat-input')) !!}
+                        {{ Form::select('mo_bagolini', $Bagolini , '', array('class' => 'mat-input')) }}
                     </div>
                 </div>
             </div>
@@ -41,14 +41,14 @@
                 <div class="col-lg-6">
                     <div class="mat-div">
                         <label for="first-name" class="mat-label">Cerca</label>
-                        {!! Form::text('mo_cosen_cer', null, array('class' => 'mat-input')) !!}
+                        {{ Form::select('mo_cosen_cer', $CorSensorial , '', array('class' => 'mat-input')) }}
                     </div>
                 </div>
 
                 <div class="col-lg-6">
                     <div class="mat-div">
                         <label for="first-name" class="mat-label">Lejos</label>
-                        {!! Form::text('mo_cosen_lej', null, array('class' => 'mat-input')) !!}
+                        {{ Form::select('mo_cosen_lej', $CorSensorial , '', array('class' => 'mat-input')) }}
                     </div>
                 </div>
             </div>             
@@ -64,7 +64,7 @@
                 <div class="col-lg-12">
                     <div class="mat-div">
                         <label for="first-name" class="mat-label">Test Usado</label>
-                        {!! Form::text('mo_esttest', null, array('class' => 'mat-input')) !!}
+                        {{ Form::select('mo_esttest', $TestUsado , '', array('class' => 'mat-input')) }}
                     </div>
                 </div>
             </div>

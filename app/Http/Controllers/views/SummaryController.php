@@ -32,6 +32,7 @@ class SummaryController extends Controller
 
     public function index()
     {
+
         $this->id_user = Auth::user()->id;
         $this->rol_user = Auth::user()->roluser;
         
@@ -84,9 +85,55 @@ class SummaryController extends Controller
             ->with('EjerciciosAsignados', $totalEjerciciosAsignados)
             ->with('EjerciciosActivos', $totalEjerciciosActivos)
             ->with('EjerciciosIncumplidos', $totalEjerciciosIncumplidos)
-            ->with('EjerciciosRealizados', $totalEjerciciosRealizados) 
-            ;
+            ->with('EjerciciosRealizados', $totalEjerciciosRealizados);
         }
+
+        if($this->rol_user == 4) { // rol = Paciente
+
+            $TotalCitasActivas = Cita::select('id')
+                ->where('id_patient', '=', $id_paciente)
+                ->where('id_empresa', '=', $id_empresa)
+                ->where('state', '=', 'AC')->get()->count();
+                
+            $totalCitasInactivas = Cita::select('id')
+                ->where('id_patient', '=', $id_paciente)
+                ->where('id_empresa', '=', $id_empresa)
+                ->where('state', '=', 'IN')->get()->count();
+                
+            $totalCitasRealizadas = Cita::select('id')
+                ->where('id_patient', '=', $id_paciente)
+                ->where('id_empresa', '=', $id_empresa)
+                ->where('state', '=', 'RE')->get()->count();
+
+            $qty_exe = Historia::from('histories as h')
+                 ->select('e.status', DB::raw('count(e.id_exercise) as cant'))
+                 ->leftJoin('history_exercises as e', 'h.id', '=', 'e.id_history')
+                 ->where('h.id_patient', '=', $id_paciente)
+                 ->where('h.id_empresa', '=', "$id_empresa")
+                 ->where('h.state', '=', 'AC')
+                 ->groupBy('e.status')
+                 ->pluck('cant', 'status');		 
+                 
+            $totalEjerciciosAsignados = 0;
+            foreach ($qty_exe as $qty_exeValue) {	
+                $totalEjerciciosAsignados = ($totalEjerciciosAsignados + $qty_exeValue);
+            }
+
+            $totalEjerciciosActivos     = isset($qty_exe['AC'])? $qty_exe['AC'] : 0;
+            $totalEjerciciosIncumplidos = isset($qty_exe['IN'])? $qty_exe['IN']: 0;
+            $totalEjerciciosRealizados  = isset($qty_exe['OK'])? $qty_exe['OK']: 0;
+                
+            return view('summary')
+            ->with('CitasActivas', $TotalCitasActivas)
+            ->with('CitasRealizadas', $totalCitasRealizadas)
+            ->with('CitasInactivas', $totalCitasInactivas)
+            ->with('TotalCitas', ($totalCitasRealizadas + $totalCitasInactivas + $TotalCitasActivas))
+            ->with('EjerciciosAsignados', $totalEjerciciosAsignados)
+            ->with('EjerciciosActivos', $totalEjerciciosActivos)
+            ->with('EjerciciosIncumplidos', $totalEjerciciosIncumplidos)
+            ->with('EjerciciosRealizados', $totalEjerciciosRealizados);
+                    
+            }
 
       
     }

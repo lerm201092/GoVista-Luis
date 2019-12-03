@@ -158,10 +158,7 @@ class PacientesController extends Controller
                 ->leftJoin('areas as a', 'p.id_Area', '=', 'a.id')
                 ->leftJoin('areas as d', 'a.padre', '=', 'd.id')
                 ->where('p.id_empresa', '=', "$this->id_empresa")
-                ->orderBy('surname1', 'asc')
-                ->orderBy('surname2', 'asc')
-                ->orderBy('name1', 'asc')
-                ->orderBy('name2', 'asc')
+                ->orderBy('id', 'desc')
                 ->paginate($perPage);
 
         return view('modulos.pacientes.listar', compact('patients'))->with('texto', '')->with('mensaje', '');
@@ -169,17 +166,10 @@ class PacientesController extends Controller
 
 
 
-    public function buscar($keyword){        
-        $patients = self::buscarPaciente($keyword);
-        return view('modulos.pacientes.listar', compact('patients'))->with('texto', $keyword);                    
-    }
-
-
-    public function buscarPaciente(Request $request){
-        $keyword = $request->keyword;
+    public function buscar($keyword){
         $this->id_empresa = Session::get('id_empresa');
         $perPage=15;
-        $pacientes = Paciente::from('patients as p')
+        $patients = Paciente::from('patients as p')
                     ->select('p.id','p.tipodoc','p.numdoc','p.name1','p.name2','p.surname1','p.surname2','p.state','a.nomarea as munic','d.nomarea as dpto')
                     ->leftJoin('areas as a', 'p.id_Area', '=', 'a.id')
                     ->leftJoin('areas as d', 'a.padre', '=', 'd.id')
@@ -196,7 +186,7 @@ class PacientesController extends Controller
                     ->orderBy('name1', 'asc')
                     ->orderBy('name2', 'asc')
                     ->paginate($perPage); 
-        return compact('pacientes');
+        return view('modulos.pacientes.listar', compact('patients'))->with('texto', $keyword)->with('mensaje', '');
     }
 
     public function queryEPS(){
