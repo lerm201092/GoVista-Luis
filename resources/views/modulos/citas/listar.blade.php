@@ -130,27 +130,31 @@ ul#tabs-ver .nav-item .nav-link{
                     <div class="tab-content p-0" style="border:1px solid #dee2e6; border-top: none">
                         <!-- PRIMER TAB -->
                         <div class="tab-pane active p-4" id="tab1">
-                            <div class="row ml-0 mr-0 mb-4">
-                                <div class="col-12 pl-0">
-                                    <p style="color :#869099; font-weight:600; font-size: 19px;"></p>
+                            @if(Auth::user()->roluser == 3)
+                                <div class="row ml-0 mr-0 mb-4">
+                                    <div class="col-12 pl-0">
+                                        <p style="color :#869099; font-weight:600; font-size: 19px;"></p>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <a href="{{ route('modulos.citas.crear') }}" class="btn btn-success" style="border-radius:50%" title="Crear Nuevo Paciente">
+                                            <span class="fa fa-plus"></span>
+                                        </a>
+                                    </div>
+                                    <!-- <div class="col-md-8 text-right">
+                                        {!! Form::open(['method' => 'GET', 'url' => '/modulos/pacientes/bf_buscar', 'class' => 'navbar-form navbar-right'])  !!}                            
+                                            <input required type="text" id="buscar" name="buscar" class="txt" placeholder="Buscar Paciente ..." value="">
+                                            <button class="ml-2 btn bg-morado text-light mb-2" style="border-radius:50%" title="Buscar Paciente"><span class="fa fa-search"></span></button>
+                                        {!! Form::close() !!}
+                                    </div> -->
                                 </div>
-                                <div class="col-md-4">
-                                    <a href="{{ route('modulos.citas.crear') }}" class="btn btn-success" style="border-radius:50%" title="Crear Nuevo Paciente">
-                                        <span class="fa fa-plus"></span>
-                                    </a>
-                                </div>
-                                <!-- <div class="col-md-8 text-right">
-                                    {!! Form::open(['method' => 'GET', 'url' => '/modulos/pacientes/bf_buscar', 'class' => 'navbar-form navbar-right'])  !!}                            
-                                        <input required type="text" id="buscar" name="buscar" class="txt" placeholder="Buscar Paciente ..." value="">
-                                        <button class="ml-2 btn bg-morado text-light mb-2" style="border-radius:50%" title="Buscar Paciente"><span class="fa fa-search"></span></button>
-                                    {!! Form::close() !!}
-                                </div> -->
-                            </div>
+                            @endif
 
                             <table id="tbl-pacientes" class="table">
                                 <thead class="text-primary">
-                                    <th>Paciente</th>
-                                    <th class="d-none d-sm-none d-md-block" style="border-bottom: none;">Medico</th>
+                                    @if(Auth::user()->roluser == 3)
+                                        <th>Paciente</th>
+                                    @endif
+                                    <th>Medico</th>
                                     <th>Fecha Cita</th>
                                     <th>Estado</th>
                                     <th></th>
@@ -159,7 +163,9 @@ ul#tabs-ver .nav-item .nav-link{
                                     @if(count($citas)>0)
                                         @foreach($citas as $item)
                                             <tr class="{{ ($item->state == 'AC')? 'activeItem' : 'inactiveItem' }}">
-                                                <td >{{ ucwords(mb_strtolower($item->name1.' '.$item->surname1)) }}</td>
+                                                @if(Auth::user()->roluser == 3)
+                                                    <td >{{ ucwords(mb_strtolower($item->name1.' '.$item->surname1)) }}</td>
+                                                @endif
                                                 <td>{{ ucwords(mb_strtolower($item->name)) }}</td>
                                                 <td>{{ $item->start }}</td>
                                                 <td>{{ $item->state }}</td>
@@ -189,7 +195,7 @@ ul#tabs-ver .nav-item .nav-link{
                                         @endforeach
                                     @else
                                         <tr>
-                                            <td>No se encontraron registros</td>
+                                            <td colspan="@if(Auth::user()->roluser == 3) 5 @else 4 @endif">No se encontraron registros</td>
                                         </tr>                     
                                     @endif
                                 </tbody>
@@ -227,7 +233,7 @@ ul#tabs-ver .nav-item .nav-link{
             </button>
         </div>
         <div class="modal-body">
-            <p class="mb-0"><span class="cl-morado-light font-weight-bold">Paciente : </span><span id="paciCita"></span></p>
+            <p class="mb-0"><span class="cl-morado-light font-weight-bold">@if(Auth::user()->roluser == 3) Paciente : @else Medico : @endif </span><span id="paciCita"></span></p>
             <p class="mb-0"><span class="cl-morado-light font-weight-bold">Motivo de consulta : </span><span id="motiCita"></span></p>
             <p class="mb-0"><span class="cl-morado-light font-weight-bold">Descripción de consulta : </span><span id="descCita"></span></p>
             <p class="mb-0"><span class="cl-morado-light font-weight-bold">Fecha/hora de la cita : </span><span id="fechaCita"></span></p>

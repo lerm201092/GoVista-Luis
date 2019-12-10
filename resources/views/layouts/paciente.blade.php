@@ -48,9 +48,9 @@
             padding:3px 10px;
         }
 
-        .nav-link:hover{
+        /* .nav-link:hover{
             background:#e4e4e4!important;
-        }
+        } */
 
         li.active .nav-link:hover{
             background:#9c27b0!important;
@@ -190,8 +190,8 @@ box-shadow: 1px 0px 5px 3px rgba(0,0,0,0.3);width:250px;right:30px;display:none;
                 </p>
                 </a>
             </li>
-            <li class="nav-item">
-                <a href="#" class="nav-link">
+            <li class="nav-item" id="li-ejercicios">
+                <a  href="{{ route('modulos.ejercicios.listado') }}" class="nav-link">
                 <span class="nav-icon 	fa fa-gamepad"></span>
                 <p>
                     Ejercicios

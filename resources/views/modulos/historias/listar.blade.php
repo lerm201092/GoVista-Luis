@@ -28,26 +28,6 @@
             <div class="card">
                 <div class="card-body">
                 <p style="color :#869099; font-weight:600; font-size: 19px;">Listado De Historias Clinicas</p>
-                    <!-- <div class="row ml-0 mr-0 mb-4">
-                        <div class="col-12 pl-0">
-                            <p style="color :#869099; font-weight:600; font-size: 19px;">Listado De Pacientes</p>
-                        </div>
-                        <div class="col-md-4">
-                            <a href="{{ route('modulos.pacientes.crear') }}" class="btn btn-success" style="border-radius:50%" title="Crear Nuevo Paciente"><span class="fa fa-plus"></span></a>
-                        </div>
-
-                        <div class="col-md-8 text-right">
-                            {!! Form::open(['method' => 'GET', 'url' => '/modulos/pacientes/bf_buscar', 'class' => 'navbar-form navbar-right'])  !!}                            
-                                <a onclick="filtro_estado('T')" class="btn bg-amarillo text-light" title="Crear Nuevo Paciente"><span class="fa fa-filter mr-2"></span>Todos</a>
-                                <a onclick="filtro_estado('A')" class="btn bg-azul text-light" title="Crear Nuevo Paciente"><span class="fa fa-filter mr-2"></span>Activos</a>
-                                <a onclick="filtro_estado('I')" class="btn bg-rojo text-light mr-3" title="Crear Nuevo Paciente"><span class="fa fa-filter mr-2"></span>Inactivos</a>
-                                <input required type="text" id="buscar" name="buscar" class="txt" placeholder="Buscar Paciente ..." value="{{ $texto ? $texto : ''}}">
-                                <button class="ml-2 btn bg-morado text-light mb-2" style="border-radius:50%" title="Buscar Paciente"><span class="fa fa-search"></span></button>
-                            {!! Form::close() !!}
-                        </div>
-                    </div> -->
-
-
                     <table id="tbl-pacientes" class="table">
                         <thead class="text-primary">
                             <th>ID</th>
@@ -78,7 +58,7 @@
                                                 {!! Form::close() !!}
                                             </span>
                                             <span style="float:left">
-                                                {!! Form::open(['method' => 'GET', 'url' => '/modulos/pacientes/bf_editar', 'class' => 'navbar-form navbar-right'])  !!}
+                                                {!! Form::open(['method' => 'GET', 'url' => '/modulos/historiaclinica/bf_dashboard', 'class' => 'navbar-form navbar-right'])  !!}
                                                 <input type="hidden" id="HistoriaId" name="HistoriaId" value="{{ $item->id }}" />                                            
                                                 <button style="background:transparent; border:none;" class="cl-morado" title="Editar información del paciente"><i class="fab fa-microsoft"></i></button>
                                                 {!! Form::close() !!}

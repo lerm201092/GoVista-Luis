@@ -158,7 +158,7 @@
 
     <div class="card col-md-12">
         <div class="card-body">
-              <!-- LENSOMETRIA -->
+            <!-- LENSOMETRIA -->
             <div class="row border m-0 pb-4 mb-4">
                 <p class="col-12 titulo-row p-2 cl-morado-light font-weight-bold">DATOS DE CREACION DE CONSULTA<span onclick="$('#div_fil_1').toggle(); icono($(this))" class="fas fa-folder-minus" style="float: right; position: relative; right: 20px; top:5px;"></span></p>
                 <div id="div_fil_1" style="width:95%; margin:0 auto">

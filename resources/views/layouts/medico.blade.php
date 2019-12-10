@@ -47,10 +47,10 @@
         .nav-item p{
             padding:3px 10px;
         }
-
+/* 
         .nav-link:hover{
-            background:#e4e4e4!important;
-        }
+            background:red!important;
+        } */
 
         li.active .nav-link:hover{
             background:#9c27b0!important;

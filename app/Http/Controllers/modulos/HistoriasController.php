@@ -99,8 +99,63 @@ class HistoriasController extends Controller{
         return redirect()->route('modulos.historiaclinica.ver', ['HistoriaId' => $request->HistoriaId ? $request->HistoriaId : '0']);
     }
 
+    public function beforeDashboard(Request $request){    
+        return redirect()->route('modulos.historiaclinica.dashboard', ['HistoriaId' => $request->HistoriaId ? $request->HistoriaId : '0']);
+    }
+
     public function beforeCrear(Request $request){      
         return redirect()->route('modulos.historiaclinica.crear', ['CitaId' => $request->CitaId ? $request->CitaId : '0']);
+    }
+
+    public function dashboard( $HistoriaId ){
+        $consulta =  "SELECT p.tipodoc, p.numdoc, p.name1, p.name2, p.surname1, p.surname2, 
+                                                                            p.birthdate, 
+                                                                            /* Cantidad de citas */
+                                                                            (SELECT COUNT(*)
+                                                                            FROM histories h2
+                                                                                WHERE h2.id_patient = h.id_patient
+                                                                            ) AS cant_citas,
+                                                                            /* Ejercicios Activos */
+                                                                            (SELECT COUNT(he.id) 
+                                                                            FROM history_exercises he, histories h2
+                                                                            WHERE he.id_history = h2.id
+                                                                                AND he.status = 'AC'
+                                                                                AND h2.id_patient = h.id_patient
+                                                                            ) AS ejercicios_ac,
+                                                                            /* Ejercicios Incumplidos */
+                                                                            (SELECT COUNT(he.id) 
+                                                                            FROM history_exercises he, histories h2
+                                                                            WHERE he.id_history = h2.id
+                                                                                AND he.status = 'IN'
+                                                                                AND h2.id_patient = h.id_patient
+                                                                            ) AS ejercicios_in,
+                                                                            /* Fecha Maxima */
+                                                                            ( SELECT MAX( h2.historydate )
+                                                                            FROM histories h2 
+                                                                            WHERE h2.id_patient  = h.id_patient
+                                                                            ) AS fecha_max,
+                                                                            /* Fecha Minima */
+                                                                            ( SELECT MIN( h2.historydate )
+                                                                            FROM histories h2 
+                                                                            WHERE h2.id_patient  = h.id_patient
+                                                                            ) AS fecha_min	                                                               
+                    FROM histories h
+                        LEFT JOIN patients p ON p.id = h.id_patient
+                    WHERE h.id = ?";
+
+        $historia = DB::select($consulta, [$HistoriaId]);
+        $historia = $historia[0];
+        $fecha_min = $historia->fecha_min;
+        $fecha_min = new Carbon($fecha_min);
+        $fecha_max = $historia->fecha_max;
+        $fecha_max = new Carbon($fecha_max);
+
+        $historia->fecha_min =  $fecha_min->format('Y-m-d');
+        $historia->fecha_max =  $fecha_max->format('Y-m-d');
+        $edad = Carbon::parse($historia->birthdate)->age;
+
+        return view('modulos.historias.dashboard', compact('historia'))
+                ->with('edad', $edad);
     }
 
     public function ver($HistoriaId){
@@ -108,7 +163,6 @@ class HistoriasController extends Controller{
         $historia = Historia::findOrFail($HistoriaId);
         $historia_aa = Historia_aa::where('id_histories', $HistoriaId)->firstOrFail(); 
         $historia_ejercicio = Historia_Ejercicio::where('id_history', $HistoriaId)->get();
-        // return $historia_ejercicio;
         $paciente = Paciente::where('id', $historia->id_patient)->firstOrFail();
         $edad = Carbon::parse($paciente->birthdate)->age;
         return view('modulos.historias.ver', compact('historia'), compact('paciente'))
@@ -278,8 +332,4 @@ class HistoriasController extends Controller{
             ->with('nompaciente', $NombrePaciente );
     }
 
-    function Validar($request){
-        
-
-    }
 }

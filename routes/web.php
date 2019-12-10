@@ -1,6 +1,6 @@
 <?php
 
-Route::get('/', function () { return view('/home'); });
+Route::get('/', function () { return view('auth.login'); });
 
 Auth::routes();
 Route::get('/summary', 'Views\\SummaryController@index')->name('summary');
@@ -36,15 +36,24 @@ Route::put('/modulos/citas/insert', 'Modulos\\CitasController@insert')->name('mo
 //AREAS
 Route::get('/Areas/municipios','Modulos\\PacientesController@queryMunicipio_onchange')->name('areas.municipios');
 
-
 //HISTORIAS CLINICAS - VISTAS
 Route::get('/modulos/historiaclinica/crear/{CitaId?}', 'Modulos\\HistoriasController@crear')->name('modulos.historiaclinica.crear');
 Route::get('/modulos/historiaclinica/listado', 'Modulos\\HistoriasController@listar')->name('modulos.historiaclinica.listado');
 Route::put('/modulos/historiaclinica/insert', 'Modulos\\HistoriasController@insert')->name('modulos.historiaclinica.insert');
 Route::get('/modulos/historiaclinica/ver/{HistoriaId?}', 'Modulos\\HistoriasController@ver')->name('modulos.historiaclinica.ver');
+Route::get('/modulos/historiaclinica/dashboard/{HistoriaId?}', 'Modulos\\HistoriasController@dashboard')->name('modulos.historiaclinica.dashboard');
+
 // HISTORIAS CLINICAS - FUNCIONES
 Route::get('/modulos/historiaclinica/bf_crear','Modulos\\HistoriasController@beforeCrear')->name('modulos.historiaclinica.bf_crear');
 Route::get('/modulos/historiaclinica/bf_ver','Modulos\\HistoriasController@beforeVer')->name('modulos.historiaclinica.bf_ver');
+Route::get('/modulos/historiaclinica/bf_dashboard','Modulos\\HistoriasController@beforeDashboard')->name('modulos.historiaclinica.bf_dashboard');
+
+//EJERCICIOS - VISTAS
+Route::get('/modulos/ejercicios/listado', 'Modulos\\HistoriasEjerciciosController@listar')->name('modulos.ejercicios.listado');
+Route::get('modulos/ejercicios/playexercise/{id}', 'Modulos\\HistoriasEjerciciosController@playexercise')->name('modulos.ejercicios.playexercise');
+//EJERCICIOS - FUNCIONES
+Route::get('/modulos/ejercicios/bf_play','Modulos\\HistoriasEjerciciosController@beforePlay')->name('modulos.ejercicios.bf_play');
+Route::get('/saveExerciceId',            'Modulos\\HistoriasEjerciciosController@saveExerciceId');
 
 //fullcalender
 Route::get('fullcalendar','CitasController@calendar');
