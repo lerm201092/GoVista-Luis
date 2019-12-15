@@ -59,7 +59,7 @@
                                             </span>
                                             <span style="float:left">
                                                 {!! Form::open(['method' => 'GET', 'url' => '/modulos/historiaclinica/bf_dashboard', 'class' => 'navbar-form navbar-right'])  !!}
-                                                <input type="hidden" id="HistoriaId" name="HistoriaId" value="{{ $item->id }}" />                                            
+                                                <input type="hidden" id="PacienteId" name="PacienteId" value="{{ $item->pid }}" />                                            
                                                 <button style="background:transparent; border:none;" class="cl-morado" title="Editar información del paciente"><i class="fab fa-microsoft"></i></button>
                                                 {!! Form::close() !!}
                                             </span>

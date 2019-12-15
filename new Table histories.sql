@@ -4,6 +4,7 @@ CREATE TABLE histories(
 id INT AUTO_INCREMENT,
 historydate DATETIME DEFAULT NULL,
 id_empresa INT DEFAULT NULL,
+id_patient INT DEFAULT NULL,
 id_medico INT DEFAULT NULL,
 id_appointment INT UNIQUE DEFAULT NULL,
 am_desc VARCHAR(500) DEFAULT NULL,

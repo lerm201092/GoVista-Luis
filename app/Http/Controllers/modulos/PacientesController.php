@@ -45,8 +45,6 @@ class PacientesController extends Controller
         return redirect()->route('modulos.pacientes.editar', ['PacienteId' => $request->PacienteId ? $request->PacienteId : '0']);
     }
 
-    
-
     public function update(Request $request, $id){
         $requestData = $request->all();
         $paciente = Paciente::findOrFail($id);

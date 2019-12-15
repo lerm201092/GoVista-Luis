@@ -190,11 +190,12 @@ class CitasController extends Controller{
     }
 
 
-    public function buscarpaciente($keyword){
+    public function buscarPaciente(Request $request){
+        $keyword = $request->keyword;
         $this->id_empresa = Session::get('id_empresa');
         $perPage=15;
 
-        $patients = Paciente::from('patients as p')
+        $pacientes = Paciente::from('patients as p')
                     ->select('p.id','p.tipodoc','p.numdoc','p.name1','p.name2','p.surname1','p.surname2','p.state','a.nomarea as munic','d.nomarea as dpto')
                     ->leftJoin('areas as a', 'p.id_Area', '=', 'a.id')
                     ->leftJoin('areas as d', 'a.padre', '=', 'd.id')
@@ -212,7 +213,7 @@ class CitasController extends Controller{
                     ->orderBy('name2', 'asc')
                     ->paginate($perPage);    
     
-        return $patients;
+        return compact("pacientes");
     }
 }
 

@@ -291,7 +291,8 @@
     function buscarPacientes(){
         var filtro = $("input[name=textBuscar]").val();
         $.get("{{ asset('/modulos/pacientes/buscar_json')}}", {keyword: filtro})
-        .done(function (data) {                   
+        .done(function (data) {   
+          console.log(data);                
             var n = data["pacientes"]["data"].length;
             var json = data["pacientes"]["data"];
             if( n > 0 ){ $("#tbl_pacientes tbody").html(""); }

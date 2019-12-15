@@ -11,6 +11,41 @@ return [
 	
     'sidebar_admon' => ['', '', '', '', '', '', ''],
     'sidebar_medico' => ['', '', '', '', '', '', ''],
+
+    'tipo_agudeza_visual' => [
+        '' => '',
+        'av_esfera_oi'   => 'Esfera - OI',
+        'av_esfera_od'   => 'Esfera - OD',
+        'av_cilindro_oi' => 'Cilindro - OI',
+        'av_cilindro_od' => 'Cilindro - OD',
+        'av_eje_oi'      => 'Eje - OI',
+        'av_eje_od'      => 'Eje - OD',
+        'av_avc_cc_oi' => 'Agudeza Visual Cerca CC OI',
+        'av_avc_cc_od' => 'Agudeza Visual Cerca CC OD',
+        'av_avc_sc_oi' => 'Agudeza Visual Cerca SC OI',
+        'av_avc_sc_od' => 'Agudeza Visual Cerda SC OD',
+        'av_avl_cc_oi' => 'Agudeza Visual Lejos CC OI',
+        'av_avl_cc_od' => 'Agudeza Visual Lejos CC OD',
+        'av_avl_sc_oi' => 'Agudeza Visual Lejos SC OI',
+        'av_avl_sc_od' => 'Agudeza Visual Lejos SC OD'
+    ],
+
+    'funcional_optometrica' => [
+        '' => '',
+        'fo_ofmeri1_oi'   => 'Meridiano 1 - OI',
+        'fo_ofmeri1_od'   => 'Meridiano 1 - OD',
+        'fo_ofmeri2_oi'   => 'Meridiano 2 - OI',
+        'fo_ofmeri2_od'   => 'Meridiano 2 - OD',
+        'fo_ofeje_oi'     => 'Oftalmometria Eje - OI',
+        'fo_ofeje_od'     => 'Oftalmometria Eje - OD',
+        'fo_retesf_oi'    => 'Retinoscopia Esfera OI',
+        'fo_retesf_od'    => 'Retinoscopia Esfera OD',
+        'fo_retcil_oi'    => 'Retinoscopia Cilindro OI',
+        'fo_retcil_od'    => 'Retinoscopia Cilindro OD',
+        'fo_reteje_oi'    => 'Retinoscopia Eje OI',
+        'fo_reteje_od'    => 'Retinoscopia Eje OD'
+    ],
+
 	
     'perfil' => [
 	    '' => '',

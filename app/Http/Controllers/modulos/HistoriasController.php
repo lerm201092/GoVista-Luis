@@ -100,14 +100,22 @@ class HistoriasController extends Controller{
     }
 
     public function beforeDashboard(Request $request){    
-        return redirect()->route('modulos.historiaclinica.dashboard', ['HistoriaId' => $request->HistoriaId ? $request->HistoriaId : '0']);
+        return redirect()->route('modulos.historiaclinica.dashboard', ['PacienteId' => $request->PacienteId ? $request->PacienteId : '0']);
     }
 
     public function beforeCrear(Request $request){      
         return redirect()->route('modulos.historiaclinica.crear', ['CitaId' => $request->CitaId ? $request->CitaId : '0']);
     }
-
-    public function dashboard( $HistoriaId ){
+    
+    public function agudeza_visual(Request $request){
+        $campo = $request->campo;
+        $PacienteId = 380;
+        $consulta = "SELECT h.id, ".$campo.", h.historydate FROM histories h WHERE h.id_patient = ".$PacienteId." ORDER BY h.id ASC";
+        $historia = DB::select($consulta, [$PacienteId]);
+        return $historia;
+    }    
+    
+    public function dashboard( $PacienteId ){
         $consulta =  "SELECT p.tipodoc, p.numdoc, p.name1, p.name2, p.surname1, p.surname2, 
                                                                             p.birthdate, 
                                                                             /* Cantidad de citas */
@@ -141,18 +149,26 @@ class HistoriasController extends Controller{
                                                                             ) AS fecha_min	                                                               
                     FROM histories h
                         LEFT JOIN patients p ON p.id = h.id_patient
-                    WHERE h.id = ?";
+                    WHERE h.id_patient = ?
+                    LIMIT 1";
 
-        $historia = DB::select($consulta, [$HistoriaId]);
-        $historia = $historia[0];
-        $fecha_min = $historia->fecha_min;
-        $fecha_min = new Carbon($fecha_min);
-        $fecha_max = $historia->fecha_max;
-        $fecha_max = new Carbon($fecha_max);
 
-        $historia->fecha_min =  $fecha_min->format('Y-m-d');
-        $historia->fecha_max =  $fecha_max->format('Y-m-d');
-        $edad = Carbon::parse($historia->birthdate)->age;
+
+        $historia = DB::select($consulta, [$PacienteId]);
+        $edad = 0;
+
+        if($historia){
+            $historia = $historia[0];        
+            $fecha_min = $historia->fecha_min;
+            $fecha_min = new Carbon($fecha_min);
+            $fecha_max = $historia->fecha_max;
+            $fecha_max = new Carbon($fecha_max);
+    
+            $historia->fecha_min =  $fecha_min->format('Y-m-d');
+            $historia->fecha_max =  $fecha_max->format('Y-m-d');
+            $edad = Carbon::parse($historia->birthdate)->age;
+        }
+
 
         return view('modulos.historias.dashboard', compact('historia'))
                 ->with('edad', $edad);
@@ -182,7 +198,7 @@ class HistoriasController extends Controller{
         $perPage = 25;
 
         $historias = Historia::from('histories as h')
-            ->select('h.id', 'h.historydate', 'p.surname1', 'p.surname2', 'p.name1', 'p.name2', 'm.name', 'h.state', 'p.tipodoc', 'p.numdoc', 'a.id_patient', 'm.name')
+            ->select('p.id as pid', 'h.id', 'h.historydate', 'p.surname1', 'p.surname2', 'p.name1', 'p.name2', 'm.name', 'h.state', 'p.tipodoc', 'p.numdoc', 'a.id_patient', 'm.name')
             ->leftJoin('medicos as m', 'h.id_medico', '=', 'm.id')
             ->leftJoin('appointments as a', 'h.id_appointment', '=', 'a.id')
             ->leftJoin('patients as p', 'a.id_patient', '=', 'p.id')

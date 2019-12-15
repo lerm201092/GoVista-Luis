@@ -14,7 +14,7 @@ Route::get('/modulos/pacientes/crear', 'Modulos\\PacientesController@crear')->na
 
 // PACIENTES - FUNCIONES
 Route::get('/modulos/pacientes/bf_buscar','Modulos\\PacientesController@beforeBuscar')->name('/modulos/pacientes/bf_buscar');
-Route::get('/modulos/pacientes/buscar_json', 'Modulos\\PacientesController@buscarPaciente')->name('modulos.pacientes.buscar_json');
+Route::get('/modulos/pacientes/buscar_json', 'Modulos\\CitasController@buscarPaciente')->name('modulos.pacientes.buscar_json');
 Route::get('/modulos/pacientes/bf_ver','Modulos\\PacientesController@beforeVer')->name('modulos.pacientes.bf_ver');
 Route::get('/modulos/pacientes/bf_editar','Modulos\\PacientesController@beforeEditar')->name('modulos.pacientes.bf_editar');
 Route::get('/modulos/pacientes/buscar/{keyword?}', 'Modulos\\PacientesController@buscar')->name('modulos.pacientes.buscar');
@@ -41,12 +41,13 @@ Route::get('/modulos/historiaclinica/crear/{CitaId?}', 'Modulos\\HistoriasContro
 Route::get('/modulos/historiaclinica/listado', 'Modulos\\HistoriasController@listar')->name('modulos.historiaclinica.listado');
 Route::put('/modulos/historiaclinica/insert', 'Modulos\\HistoriasController@insert')->name('modulos.historiaclinica.insert');
 Route::get('/modulos/historiaclinica/ver/{HistoriaId?}', 'Modulos\\HistoriasController@ver')->name('modulos.historiaclinica.ver');
-Route::get('/modulos/historiaclinica/dashboard/{HistoriaId?}', 'Modulos\\HistoriasController@dashboard')->name('modulos.historiaclinica.dashboard');
+Route::get('/modulos/historiaclinica/dashboard/{PacienteId?}', 'Modulos\\HistoriasController@dashboard')->name('modulos.historiaclinica.dashboard');
 
 // HISTORIAS CLINICAS - FUNCIONES
 Route::get('/modulos/historiaclinica/bf_crear','Modulos\\HistoriasController@beforeCrear')->name('modulos.historiaclinica.bf_crear');
 Route::get('/modulos/historiaclinica/bf_ver','Modulos\\HistoriasController@beforeVer')->name('modulos.historiaclinica.bf_ver');
 Route::get('/modulos/historiaclinica/bf_dashboard','Modulos\\HistoriasController@beforeDashboard')->name('modulos.historiaclinica.bf_dashboard');
+Route::get('/modulos/historiaclinica/agudeza_visual','Modulos\\HistoriasController@agudeza_visual')->name('modulos.historiaclinica.agudeza_visual');
 
 //EJERCICIOS - VISTAS
 Route::get('/modulos/ejercicios/listado', 'Modulos\\HistoriasEjerciciosController@listar')->name('modulos.ejercicios.listado');

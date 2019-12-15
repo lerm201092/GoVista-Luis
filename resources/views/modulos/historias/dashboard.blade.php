@@ -1,5 +1,8 @@
 @extends('layouts.medico')
 @section('head')
+
+<link href="/vendor/chartist/chartist.min.css" rel="stylesheet" />
+<script type="text/javascript" src="/vendor/chartist/chartist.min.js"></script>
     <style>
     #tabs-ver li a.nav-link{
         font-size:13px;
@@ -207,6 +210,35 @@
     margin-bottom: 9px;
   }
 
+    .category{
+        font-size: 12px
+    }
+    #tbl_fo thead tr{
+        border-bottom: 1px solid #e1e1e1;
+    }
+
+    #tbl_fo thead tr th {
+        color: #5eb562;
+        font-size: 12px;
+    }
+
+    #tbl_fo tbody tr td {
+        font-size: 12px;
+    }
+
+    #tbl_av thead tr{
+        border-bottom: 1px solid #e1e1e1;
+    }
+
+    #tbl_av thead tr th {
+        color: #5eb562;
+        font-size: 12px;
+    }
+
+    #tbl_av tbody tr td {
+        font-size: 12px;
+    }
+
     </style>
 
 
@@ -214,20 +246,20 @@
 
 @section('content')
 
-@if ($errors->any())
-    <div class="row">
-        <div class="col-12 px-3">
-            <div class="alert alert-danger">
-                <p><strong>¡Advertencias!</strong></p>
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
+        @if ($errors->any())
+            <div class="row">
+                <div class="col-12 px-3">
+                    <div class="alert alert-danger">
+                        <p><strong>¡Advertencias!</strong></p>
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
-@endif
+        @endif
 
 <div class="row pl-3 pr-3">
     <div class="card col-md-12">
@@ -241,19 +273,19 @@
                         <div class="col-lg-3 px-1">
                             <div class="mat-div is-completed">
                             <label for="first-name" class="mat-label">Identificación</label>
-                            {!! Form::text('title', $historia->tipodoc.' '.$historia->numdoc, array('class' => 'mat-input', 'disabled')) !!}
+                            {!! Form::text('title', ($historia->tipodoc ?? '').' '.($historia->numdoc ?? ''), array('class' => 'mat-input', 'disabled')) !!}
                             </div>
                         </div> 
                         <div class="col-lg-3 px-1">
                             <div class="mat-div is-completed">
                             <label for="first-name" class="mat-label">Nombre Paciente</label>
-                            {!! Form::text('title', ucwords(strtolower($historia->name1.' '.$historia->name2)), array('class' => 'mat-input', 'disabled')) !!}
+                            {!! Form::text('title', ucwords(strtolower(($historia->name1 ?? '').' '.($historia->name2 ?? ''))), array('class' => 'mat-input', 'disabled')) !!}
                             </div>
                         </div>     
                         <div class="col-lg-2 px-1">
                             <div class="mat-div is-completed">
                             <label for="first-name" class="mat-label">Apellido Paciente</label>
-                            {!! Form::text('title', ucwords(strtolower($historia->surname1.' '.$historia->surname2)), array('class' => 'mat-input', 'disabled')) !!}
+                            {!! Form::text('title', ucwords(strtolower(($historia->surname1 ?? '').' '.($historia->surname2 ?? ''))), array('class' => 'mat-input', 'disabled')) !!}
                             </div>
                         </div>   
                         <div class="col-lg-2 px-1">
@@ -292,7 +324,7 @@
                                         <p class="valores-cajas">{{ $historia->cant_citas ?? 0 }}</p>
                                     </div>
                                 </div>
-                                <p class="p-sub-cuadro"><span class="fas fa-user-friends cl-verde mr-2"></span>Desde {{ $historia->fecha_min }} hasta {{ $historia->fecha_max }} <span></span></p>
+                                <p class="p-sub-cuadro"><span class="fas fa-user-friends cl-verde mr-2"></span>Desde {{ $historia->fecha_min ?? '' }} hasta {{ $historia->fecha_max ?? '' }} <span></span></p>
                             </div>                    
                         </div>
                     </div>           
@@ -362,7 +394,105 @@
                         </div>
                     </div>           
                 </div>  
-            </div>  
+            </div>
+
+
+            <!-- Inicio -->
+            <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header card-chart" data-background-color="green">
+                        <div class="ct-chart" id="VisualAcuityChart"></div>
+                    </div>
+                    <div class="card-content  p-3">
+                        <h5 class="title">Agudeza Visual</h5>
+                        <p class="category">Historico de informacion para los cammpos de agudeza visual.</p>
+                        <div class="col-md-12">
+                            <div class="row mb-4">
+                                <div class="col-12">
+                                    <label for="agudeza_visual" style="font-size: 12px; color: #5eb562;">Escoja una campo:   </label>
+                                    {{ Form::select('agudeza_visual', Config::get('constantes.tipo_agudeza_visual'),'', array('class' => 'mat-input', 'onchange'=>'cambio_av()')) }}
+                                </div>
+                            </div>
+                            <div class="row mt-4">
+                                <div class="col-12">
+                                    <table id="tbl_av" class="striped tbl-striped" style="width: 100%">
+                                        <thead>
+                                            <tr>
+                                                <th>HC #</th>
+                                                <th>Valor</th>
+                                                <th>Fecha</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td colspan="3">No hay registros, escoja un campo</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>                            
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="stats">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header card-chart" data-background-color="orange">
+                        <div class="ct-chart" id="IntpupDistChart"></div>
+                    </div>
+                    <div class="card-content p-3">
+                        <h5 class="title">Funcional optometrica</h5>
+                        <p class="category">Historico de informacion para los cammpos de agudeza visual.</p>
+                        <div class="col-md-12">
+                            <div class="row mb-4">
+                                <div class="col-12">
+                                    <label for="funcional_optometrica" style="font-size: 12px; color: #5eb562;">Escoja una campo:   </label>
+                                    {{ Form::select('funcional_optometrica', Config::get('constantes.funcional_optometrica'),'', array('class' => 'mat-input', 'onchange'=>'cambio_fo()')) }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <table id="tbl_fo" class="striped tbl-striped" style="width: 100%">
+                                        <thead>
+                                            <tr>
+                                                <th>HC #</th>
+                                                <th>Valor</th>
+                                                <th>Fecha</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td colspan="3">No hay registros, escoja un campo</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="stats">
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Fin -->
+
+
+
+
+
+            
+              
         </div>
     </div>
 </div>
@@ -389,5 +519,92 @@
             x.removeClass('fas fa-folder-open').addClass('fas fa-folder-minus')
         }
     }
+
+    function cambio_av(){
+        var campo = $("select[name=agudeza_visual] option:selected");
+        campo = campo.val();
+        $.ajax({
+          type: 'GET',
+          url: "{!!URL::to('/modulos/historiaclinica/agudeza_visual')!!}",
+          data: {'campo': campo},
+          success: function (data) {
+              console.log(data);
+            console.log(data.length);
+            var label = new Array(), html="", datos = new Array();
+            for (var i = 0; i < data.length; i++) {
+                label.push('HC#'+(i+1)+' ('+data[i].id+')');
+                html += "<tr><td>"+(i+1)+' ('+data[i].id+")</td><td>"+data[i][campo]+"</td><td>"+data[i]['historydate']+"</td></tr>";
+                datos.push(data[i][campo]);     
+            } 
+            $("#tbl_av tbody").html(html);
+            grafico(label, datos, 'VisualAcuityChart');
+          }
+      });
+    }
+
+    function cambio_fo(){
+        var campo = $("select[name=funcional_optometrica] option:selected");
+        campo = campo.val();
+        $.ajax({
+          type: 'GET',
+          url: "{!!URL::to('/modulos/historiaclinica/agudeza_visual')!!}",
+          data: {'campo': campo},
+          success: function (data) {
+              console.log(data);
+            console.log(data.length);
+            var label = new Array(), html="", datos = new Array();
+            for (var i = 0; i < data.length; i++) {
+                label.push('HC#'+(i+1)+' ('+data[i].id+')');
+                html += "<tr><td>"+(i+1)+' ('+data[i].id+")</td><td>"+data[i][campo]+"</td><td>"+data[i]['historydate']+"</td></tr>";
+                datos.push(data[i][campo]);     
+            } 
+            $("#tbl_fo tbody").html(html);
+            grafico(label, datos, 'IntpupDistChart');
+          }
+      });
+    }
+
+
+    function grafico( label, valor, div ){
+        var options = {
+            axisX: {
+                labelInterpolationFnc: function(value) {
+                return '' + value;
+                }
+            },
+            height: 300
+        };
+
+        var responsiveOptions = [
+            ['screen and (min-width: 641px) and (max-width: 1024px)', {
+                showPoint: false,
+                axisX: {
+                labelInterpolationFnc: function(value) {
+                    return '' + value;
+                }
+                }
+            }],
+            ['screen and (max-width: 640px)', {
+                showLine: false,
+                axisX: {
+                labelInterpolationFnc: function(value) {
+                    return '' + value;
+                }
+                }
+            }]
+        ];
+
+        var data = {
+            labels: label,
+            series: [{
+                data: valor
+            }]
+        };
+
+        new Chartist.Line('#'+div, data, options, responsiveOptions);
+    }
+
+
+    // fin
 </script>
 @endsection
