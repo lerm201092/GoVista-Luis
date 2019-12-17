@@ -124,8 +124,6 @@ function SetData() {
 var isAjaxState = false;
 function SaveData(id, id_history, duration, Failure, Progress, status_game, coins, stars)//metodo llamado por el juego para guardar los datos
 {
-
-    alert("HOLA MUNDO");
        $.ajax({url: "{!!URL::to('/saveExerciceId')!!}",
     async: false,
     type: 'GET',

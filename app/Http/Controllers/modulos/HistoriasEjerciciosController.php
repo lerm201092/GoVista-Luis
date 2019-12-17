@@ -12,12 +12,14 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Http\RedirectResponse;
 
+use App\User;
 use App\Model\Medico;
 use App\Model\Cita;
 use App\Model\Paciente;
 use App\Model\Historia;
 use App\Model\Historia_Aa;
 use App\Model\Historia_Ejercicio;
+use App\Model\Historia_Ejercicio_Detalle;
 
 use Carbon\Carbon;
 
@@ -105,7 +107,53 @@ class HistoriasEjerciciosController extends Controller
     }
 
 
+    public function saveExerciceId(Request $request)
+    {
+        //if our chosen id and products table prod_cat_id col match the get first 100 data
+        //$request->id here is the id of our chosen option id
+        $data = [];
 
+        if($request->has('id') && $request->has('duration') && $request->has('status') ){
+            $keywordId = $request->id;
+            $duration = $request->duration;
+            $status = $request->status;
+            $coins = $request->coins;
+            $stars = $request->stars;
+            $progress = $request->progress;
+            $failure = $request->failure;
+
+            $aDataHistory_exercises_detail = array();
+            $aDataHistory_exercises_detail['id'] = $keywordId;
+            $aDataHistory_exercises_detail['duracion'] = $duration;
+            $aDataHistory_exercises_detail['status'] = $status;
+            $aDataHistory_exercises_detail['coin'] = $coins;
+            $aDataHistory_exercises_detail['star'] = $stars;
+            $aDataHistory_exercises_detail['failure'] = $failure;
+            $aDataHistory_exercises_detail['progress'] = $progress;
+
+            Historia_Ejercicio_Detalle::create($aDataHistory_exercises_detail);
+
+            if(strcmp($status, "OK")==0){
+                $history_Exercises = Historia_Ejercicio::findOrFail($keywordId);			
+                $aDataHistory_Exercises = array();
+                $aDataHistory_Exercises['id'] = $keywordId;
+                $aDataHistory_Exercises['session_ok'] = $history_Exercises->session_ok + 1;
+                $aDataHistory_Exercises['updated_user'] = Auth::user()->username;	
+                
+                $sessiones = Auth::user()->total_sessiones - 1;
+                if($sessiones < 0 ){ $sessiones = 0; }
+                
+				User::where('id','=',Auth::user()->id)->update(array( 'total_sessiones' => ($sessiones) )); // restar la sesion				
+                if( $history_Exercises->session == ($history_Exercises->session_ok + 1) ){
+                    $aDataHistory_Exercises['status'] = "OK";
+                }
+                $history_Exercises->update($aDataHistory_Exercises);				          
+            }
+            $data = Historia_Ejercicio::select('id','id_history','id_exercise','observation')
+                ->where('id', '=', "$keywordId")->get();
+        }
+        return response()->json($data);//then sent this data to ajax success
+    }
 
     public function idPaciente(){
         $data = Paciente::select('id')
