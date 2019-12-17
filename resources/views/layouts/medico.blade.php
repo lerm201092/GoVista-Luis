@@ -165,7 +165,7 @@ box-shadow: 1px 0px 5px 3px rgba(0,0,0,0.3);width:250px;right:30px;display:none;
         <!-- Sidebar user panel (optional) -->
         <div class="user-panel pb-3 mb-3 d-flex">
             <div class="info col-12 text-center">
-                <a href="#" class="d-block"><b>Medico</b></a>
+                <a href="#" class="d-block"><b>Medico General</b></a>
             </div>
         </div>
 
