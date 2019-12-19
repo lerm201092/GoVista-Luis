@@ -6,6 +6,10 @@ Auth::routes();
 Route::get('/summary', 'Views\\SummaryController@index')->name('summary');
 Route::get('/userEmpresa_Login', 'Auth\\LoginController@userEmpresa_Login');
 
+// change password
+Route::get ('/changePassword' ,'Modulos\\UserController@showChangePasswordForm');
+Route::post('/changePassword' ,'Modulos\\UserController@changePassword')->name('changePassword');
+
 //  PACIENTES - VISTAS
 Route::get('/modulos/pacientes/listado', 'Modulos\\PacientesController@listar')->name('modulos.pacientes.listado');
 Route::get('/modulos/pacientes/ver/{PacienteId?}', 'Modulos\\PacientesController@ver')->name('modulos.pacientes.ver');

@@ -74,7 +74,10 @@
 @endsection
 
 @section('scripts')
+    <script src="{{asset('/vendor/sweetalert/sweetalert.js') }}"></script>
     <script type="text/javascript">
+
+        cargando( 'on' );
 
         function username_onblur() {
             var txtUserName = $("#username").val();
@@ -104,6 +107,35 @@
         function MaysPrimera(string){
             string = string.toLowerCase();
             return string.charAt(0).toUpperCase() + string.slice(1);
+        }
+
+        function cargando( status ){
+            if(status == "on"){            
+                let timerInterval
+                Swal.fire({
+                html: '<span>Cargando, espere un momento ...</span>',
+                timerProgressBar: true,
+                onBeforeOpen: () => {
+                    Swal.showLoading()
+                    timerInterval = setInterval(() => {
+                    Swal.getContent().querySelector('b')
+                        .textContent = Swal.getTimerLeft()
+                    }, 100)
+                },
+                onClose: () => {
+                    clearInterval(timerInterval)
+                }
+                }).then((result) => {
+                if (
+                    /* Read more about handling dismissals below */
+                    result.dismiss === Swal.DismissReason.timer
+                ) {
+                    console.log('I was closed by the timer') // eslint-disable-line
+                }
+                })
+            }else{
+                Swal.close();
+            }
         }
 
     </script>

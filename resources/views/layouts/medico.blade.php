@@ -139,7 +139,7 @@ box-shadow: 1px 0px 5px 3px rgba(0,0,0,0.3);width:250px;right:30px;display:none;
             <div id="sub-menu-user-right">
                 <table style="width:100%;">
                     <tr class="tr-menu-user" ><td class="td-menu-user"><span class="fa fa-user mr-3"></span>Mi Perfil</td></tr>
-                    <tr class="tr-menu-user" ><td class="td-menu-user"><span class="fas fa-key mr-3"></span>Cambiar Contraseña</td></tr>
+                    <tr class="tr-menu-user" ><td class="td-menu-user"><a href="{{ route('changePassword') }}"><span class="fas fa-key mr-3"></span>Cambiar Contraseña</a></td></tr>
                     <tr class="tr-menu-user" ><td class="td-menu-user"><span class="fas fa-shopping-cart mr-3"></span>Comprar</td></tr>
                     <tr class="tr-menu-user" ><td class="td-menu-user"><span class="far fa-credit-card mr-3"></span>Detalles De Pagos</td></tr>
                     <tr class="tr-menu-user" style="border-top:1px solid #d2d2d2">
