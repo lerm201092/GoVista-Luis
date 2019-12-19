@@ -19,6 +19,13 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
+    <!-- Scripts - jquery 3.4.1-->
+    <script src="{{ asset('/vendor/jquery/dist/jquery.min.js') }}"></script>
+    <script src="{{ asset('/vendor/bootstrap/dist/js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('/vendor/popper.js/dist/umd/popper.min.js') }}"></script>
+    <script src="{{ asset('/vendor/src/js/adminlte.min.js') }}"></script>
+
+    @yield('head')
     
 </head>
 <body class="bg-dark">

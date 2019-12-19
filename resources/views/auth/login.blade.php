@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('head')
+
+@endsection
+
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
@@ -76,8 +80,10 @@
 @section('scripts')
     <script src="{{asset('/vendor/sweetalert/sweetalert.js') }}"></script>
     <script type="text/javascript">
-
-        cargando( 'on' );
+        cargando(1);
+        $(document).ready(function(){
+            cargando(0);
+        });
 
         function username_onblur() {
             var txtUserName = $("#username").val();
@@ -109,18 +115,15 @@
             return string.charAt(0).toUpperCase() + string.slice(1);
         }
 
-        function cargando( status ){
-            if(status == "on"){            
+        function cargando( status ){            
+            if(status == 1){     
+                console.log("Cargando Encendido ...");
                 let timerInterval
                 Swal.fire({
                 html: '<span>Cargando, espere un momento ...</span>',
                 timerProgressBar: true,
                 onBeforeOpen: () => {
-                    Swal.showLoading()
-                    timerInterval = setInterval(() => {
-                    Swal.getContent().querySelector('b')
-                        .textContent = Swal.getTimerLeft()
-                    }, 100)
+                   
                 },
                 onClose: () => {
                     clearInterval(timerInterval)
@@ -134,6 +137,7 @@
                 }
                 })
             }else{
+                console.log("Cargando Apagado ...");
                 Swal.close();
             }
         }

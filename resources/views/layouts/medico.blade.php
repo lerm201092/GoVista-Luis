@@ -15,6 +15,7 @@
   <script src="{{ asset('/vendor/bootstrap/dist/js/bootstrap.min.js') }}"></script>
   <script src="{{ asset('/vendor/popper.js/dist/umd/popper.min.js') }}"></script>
   <script src="{{ asset('/vendor/src/js/adminlte.min.js') }}"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
     <style>
         .row{
             margin-right: 0;

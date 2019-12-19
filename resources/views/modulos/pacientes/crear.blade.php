@@ -66,7 +66,7 @@
                       <a href="{{ route('modulos.pacientes.listado') }}" class="btn bg-morado text-light"><span class="fas fa-caret-left mr-2"></span>Regresar</a> 
                   </div>
                 <div class="col-sm-6 text-right">
-                {!! Form::submit( 'Agregar', ['class' => 'btn bg-morado text-light']) !!} 	
+                    {!! Form::submit( 'Agregar', ['class' => 'btn bg-morado text-light', 'onclick'=>'cargando(1)']) !!} 	
                 </div>           
               </div>
 
@@ -80,5 +80,33 @@
 @endsection
 
 @section('script')
+    <script>
+        function cargando( status ){            
+            if(status == 1){     
+                console.log("Cargando Encendido ...");
+                let timerInterval
+                Swal.fire({
+                html: '<span>Cargando, espere un momento ...</span>',
+                timerProgressBar: true,
+                onBeforeOpen: () => {
+                   
+                },
+                onClose: () => {
+                    clearInterval(timerInterval)
+                }
+                }).then((result) => {
+                if (
+                    /* Read more about handling dismissals below */
+                    result.dismiss === Swal.DismissReason.timer
+                ) {
+                    console.log('I was closed by the timer') // eslint-disable-line
+                }
+                })
+            }else{
+                console.log("Cargando Apagado ...");
+                Swal.close();
+            }
+        }
+    </script>
     <script src="{{ asset('js/PacientesCrear.js') }}" defer></script>
 @endsection
