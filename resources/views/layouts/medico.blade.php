@@ -44,6 +44,14 @@
             cursor:pointer;
         }
 
+        .td-menu-user a{
+            color:gray!important;
+        }
+
+        .td-menu-user a:hover{
+            color:white!important;
+        }
+
 
         .nav-item p{
             padding:3px 10px;
@@ -140,9 +148,8 @@ box-shadow: 1px 0px 5px 3px rgba(0,0,0,0.3);width:250px;right:30px;display:none;
             <div id="sub-menu-user-right">
                 <table style="width:100%;">
                     <tr class="tr-menu-user" ><td class="td-menu-user"><span class="fa fa-user mr-3"></span>Mi Perfil</td></tr>
-                    <tr class="tr-menu-user" ><td class="td-menu-user"><a href="{{ route('changePassword') }}"><span class="fas fa-key mr-3"></span>Cambiar Contraseña</a></td></tr>
-                    <tr class="tr-menu-user" ><td class="td-menu-user"><span class="fas fa-shopping-cart mr-3"></span>Comprar</td></tr>
-                    <tr class="tr-menu-user" ><td class="td-menu-user"><span class="far fa-credit-card mr-3"></span>Detalles De Pagos</td></tr>
+                    <tr class="tr-menu-user" ><td class="td-menu-user"><a href="{{ route('changePassword') }}"><span class="fas fa-key mr-3"></span> Cambiar Contraseña</a></td></tr>
+                    <tr class="tr-menu-user" ><td class="td-menu-user"><a href="#" onclick="comprar()"><span class="fas fa-shopping-cart mr-3"></span> Comprar</a></td></tr>
                     <tr class="tr-menu-user" style="border-top:1px solid #d2d2d2">
                         <td class="td-menu-user" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                             <span class="fas fa-power-off mr-3"></span> Cerrar Sesión
@@ -288,6 +295,13 @@ box-shadow: 1px 0px 5px 3px rgba(0,0,0,0.3);width:250px;right:30px;display:none;
         console.log("{{ Auth::user()->nombres }}");
         function submenu(){
             $("#sub-menu-user-right").slideToggle(0);
+        }
+
+        function comprar(){
+            var r = confirm("¿Realmente desea comprar los servicios de GoVista?, Nota: El correo a relacionar debera corresponder al correo registrado en el aplicativo");
+            if (r == true) {
+                location.href="https://biz.payulatam.com/B0c59ae77D65D96";
+            } 
         }
     </script>
 

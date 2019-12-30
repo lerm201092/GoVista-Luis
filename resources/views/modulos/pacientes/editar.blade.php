@@ -58,7 +58,7 @@ color:#9c27b0;
                 </li>
             </ul>
 
-            <form action="{{ route('modulos.pacientes.update', $paciente->id) }}" method="POST">
+            <form action="{{ route('modulos.pacientes.update', $paciente->id) }}" method="POST" id="formulario">
 				@method('put')
 				@csrf
                 <!-- Tab panes -->
@@ -88,6 +88,21 @@ color:#9c27b0;
 @section('script')
   <script src="{{ asset('js/PacientesEditar.js') }}" defer></script>
   <script type="text/javascript">
+      var form = document.getElementById('formulario')[0];
+      alert("hola");
+form.addEventListener("submit", function (event) {
+    alert("hola");
+  // Cada vez que el usuario intenta enviar los datos, verificamos
+  // si el campo de correo es válido.
+  if (!email.validity.valid) {
+    
+    // Si el campo no es válido, mostramos un mensaje de error.
+    error.innerHTML = "¡Yo esperaba una dirección de correo, cariño!";
+    error.className = "error active";
+    // Y prevenimos que el formulario sea enviado, cancelando el evento
+    event.preventDefault();
+  }
+}, function(event){alert("hola");});
         function cargando( status ){            
             if(status == 1){     
                 console.log("Cargando Encendido ...");

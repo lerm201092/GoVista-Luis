@@ -83,6 +83,7 @@
                                                 <strong>{{ $errors->first('new-password-confirm') }}</strong>
                                             </span>
                                         @endif
+                                        <span id="igual-pass"></span>
                                     </div>
                                 </div>	
 
@@ -109,6 +110,9 @@
     </div>	
     <!-- Alert message -->	
     <script type="text/javascript">
+
+
+
         window.setTimeout(function() {
             $(".alert").slideToggle(500, function (){
                 $(this).remove(); 
